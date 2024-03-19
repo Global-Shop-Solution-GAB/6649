@@ -1,0 +1,1634 @@
+Program.Sub.ScreenSU.Start
+Gui.SS_Form1..Create
+Gui.SS_Form1..Caption("Job Paperwork Report")
+Gui.SS_Form1..Size(3915,3135)
+Gui.SS_Form1..Position(0,0)
+Gui.SS_Form1..ForeColor(0)
+Gui.SS_Form1..Backcolor(-2147483633)
+Gui.SS_Form1..MaxButton(False)
+Gui.SS_Form1..MinButton(False)
+Gui.SS_Form1..MousePointer(0)
+Gui.SS_Form1..Sizeable(False)
+Gui.SS_Form1..Event(UnLoad,SS_Form1_Unload)
+Gui.SS_Form1..minx(0)
+Gui.SS_Form1..miny(0)
+Gui.SS_Form1.lbl_txtJob.Create(label,"Job",True,1305,195,1,105,135,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.txtJob.Create(textbox,"",True,1260,300,0,105,330,True,0,"Arial",8,16777215,1)
+Gui.SS_Form1.txtJob.Text("")
+Gui.SS_Form1.txtJob.TabStop(True)
+Gui.SS_Form1.txtJob.TabIndex(1)
+Gui.SS_Form1.txtJob.DefaultValue("")
+Gui.SS_Form1.txtJob.ForeColor(0)
+Gui.SS_Form1.lbl_txtSuffix.Create(label,"Suffix",True,1800,195,1,1440,135,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.txtSuffix.Create(textbox,"",True,720,330,0,1500,330,True,0,"Arial",8,16777215,1)
+Gui.SS_Form1.txtSuffix.Text("")
+Gui.SS_Form1.txtSuffix.TabStop(True)
+Gui.SS_Form1.txtSuffix.TabIndex(3)
+Gui.SS_Form1.txtSuffix.DefaultValue("")
+Gui.SS_Form1.lbl_dtpDate.Create(label,"Date",False,1800,195,1,105,840,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.dtpDate.Create(datepicker)
+Gui.SS_Form1.dtpDate.Visible(False)
+Gui.SS_Form1.dtpDate.Size(1800,345)
+Gui.SS_Form1.dtpDate.Position(105,1035)
+Gui.SS_Form1.dtpDate.TabStop(True)
+Gui.SS_Form1.dtpDate.TabIndex(5)
+Gui.SS_Form1.dtpDate.DefaultValue("")
+Gui.SS_Form1.lbl_txtIssue.Create(label,"Issue By",False,1800,195,1,105,1470,True,0,"Arial",8,-2147483633,0)
+Gui.SS_Form1.txtIssue.Create(textbox,"",False,3090,300,0,105,1665,False,0,"Arial",8,16777215,1)
+Gui.SS_Form1.txtIssue.Text("")
+Gui.SS_Form1.txtIssue.MaxLength(20)
+Gui.SS_Form1.txtIssue.TabStop(True)
+Gui.SS_Form1.txtIssue.TabIndex(7)
+Gui.SS_Form1.txtIssue.DefaultValue("")
+Gui.SS_Form1.cmdPrint.Create(button)
+Gui.SS_Form1.cmdPrint.Caption("Print")
+Gui.SS_Form1.cmdPrint.Size(1000,360)
+Gui.SS_Form1.cmdPrint.Position(100,2080)
+Gui.SS_Form1.cmdPrint.TabStop(True)
+Gui.SS_Form1.cmdPrint.TabIndex(8)
+Gui.SS_Form1.cmdPrint.DefaultValue("")
+Gui.SS_Form1.cmdPrint.Event(Click,cmdPrint_Click)
+Gui.SS_Form1.cmdBrowser.Create(button)
+Gui.SS_Form1.cmdBrowser.Caption("^")
+Gui.SS_Form1.cmdBrowser.Size(510,345)
+Gui.SS_Form1.cmdBrowser.Position(2385,315)
+Gui.SS_Form1.cmdBrowser.FontSize(7)
+Gui.SS_Form1.cmdBrowser.TabStop(True)
+Gui.SS_Form1.cmdBrowser.TabIndex(9)
+Gui.SS_Form1.cmdBrowser.DefaultValue("")
+Gui.SS_Form1.cmdBrowser.Event(Click,cmdBrowser_Click)
+Program.Sub.ScreenSU.End
+
+Program.Sub.Preflight.Start
+Variable.UDT.uEngRelDet.Define("Parent",String,Parent)
+Variable.UDT.uEngRelDet.Define("Component",String,Component)
+Variable.UDT.uEngRelDet.Define("Description",String,Description)
+Variable.UDT.uEngRelDet.Define("Qty",Float,Qty)
+Variable.UDT.uEngRelDet.Define("BIRUNID",Long,BIRUNID)
+Variable.uGlobal.uEngRelDet.Declare("uEngRelDet")
+Variable.UDT.uBOM.DEFINE("BIRUNID",STRING)
+Variable.UDT.uBom.Define("Parent",String)
+Variable.UDT.uBom.Define("Component",String)
+Variable.UDT.uBom.Define("Qty",Float)
+Variable.UDT.uBom.Define("BOM_Desc",String)
+Variable.UDT.uBom.Define("Level",String)
+Variable.UDT.uBom.Define("Code_Exception",String)
+Variable.UDT.uBom.Define("Code_Total",String)
+Variable.uGlobal.uBOM.Declare("uBOM")
+Variable.UDT.uEngHead.Define("BIRUNID",STring,BIRUNID)
+Variable.UDT.uEngHead.Define("Part",String,Part)
+Variable.UDT.uEngHead.Define("Order_Number",String,ORDER_NO)
+Variable.UDT.uEngHead.Define("Order_Line",String,ORDER_Line)
+Variable.UDT.uEngHead.Define("Description",String,Description)
+Variable.UDT.uEngHead.Define("Issue_By",String,ISSUE_BY)
+Variable.UDT.uEngHead.Define("Date",Date,DATE_RELEASED)
+Variable.UDT.uEngHead.Define("Exception_Flag",String,EXCEPTION_FLAG)
+Variable.uGlobal.uEngHead.Declare("uEngHead")
+Variable.Global.sPart.Declare(String)
+Variable.Global.sJob.Declare(String)
+Variable.Global.sSuffix.Declare(String)
+Variable.UDT.uHStdBom.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uHStdBom.Define("Job",String,JOB)
+Variable.UDT.uHStdBom.Define("Suffix",String,SUFFIX)
+Variable.UDT.uHStdBom.Define("Parent",String,PARENT)
+Variable.UDT.uHStdBom.Define("Description",String,DESCRIPTION)
+Variable.UDT.uHStdBom.Define("BOM_Checked",String,BOM_CHECKED)
+Variable.UDT.uHStdBom.Define("Rev",String,Rev)
+Variable.UDT.uHStdBom.Define("Qty",Float,QTY)
+Variable.uGlobal.uHStdBOM.Declare("uHStdBom")
+Variable.UDT.uDSTDBOM.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uDSTDBOM.Define("Parent",String,Parent)
+Variable.UDT.uDSTDBOM.Define("Item",String,Item_No)
+Variable.UDT.uDSTDBOM.Define("Rev",String,Rev)
+Variable.UDT.uDSTDBOM.Define("Component",String,Component)
+Variable.UDT.uDSTDBOM.Define("Desc",String,Description)
+Variable.UDT.uDSTDBOM.Define("Qty",Float,Qty)
+Variable.UDT.uDSTDBOM.Define("UM",String,UM)
+Variable.UDT.uDSTDBOM.Define("Shear_Size",String,Shear_Size)
+Variable.UDT.uDSTDBOM.Define("Material",String,Material)
+Variable.UDT.uDSTDBOM.Define("Program_NO",String,Program_No)
+Variable.UDT.uDSTDBOM.Define("Dept",String,Department)
+Variable.UDT.uDSTDBOM.Define("Code_Exception",String,)
+Variable.UDT.uDSTDBOM.Define("Code_Total",String,)
+Variable.uGlobal.uDSTDBOM.Declare("uDSTDBOM")
+Variable.UDT.uHPurch.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uHPurch.Define("Parent",String,PARENT)
+Variable.UDT.uHPurch.Define("Order_NO",String,ORDER_NO)
+Variable.UDT.uHPurch.Define("Order_Line",String,ORDER_LINE)
+Variable.UDT.uHPurch.Define("Ord_Qty",Float,ORD_QTY)
+Variable.UDT.uHPurch.Define("RPM",String,RPM)
+Variable.UDT.uHPurch.Define("DESC",String,DESCRIPTION)
+Variable.UDT.uHPurch.Define("Ship_Date",Date,Ship_Date)
+Variable.UDT.uHPurch.Define("Extra_Text_1",String,Extra_Text_1)
+Variable.UDT.uHPurch.Define("Extra_Text_2",String,Extra_Text_2)
+Variable.uGlobal.uHPurch.Declare("uHPurch")
+Variable.UDT.uDPurch.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uDPurch.Define("Parent",String,Parent)
+Variable.UDT.uDPurch.Define("Component",String,Component)
+Variable.UDT.uDPurch.Define("DESC",String,Description)
+Variable.UDT.uDPurch.Define("Qty_Each",Float,Qty_Each)
+Variable.UDT.uDPurch.Define("Qty_Total",Float,Qty_Total)
+Variable.UDT.uDPurch.Define("UM",String,UM)
+Variable.UDT.uDPurch.Define("Comp_ID",String,Comp_ID)
+Variable.UDT.uDPurch.Define("MFG_Part",String,MFG_PART)
+Variable.UDT.uDPurch.Define("MFG_NAME",String,MFG_Name)
+Variable.UDT.uDPurch.Define("Sort_Code",String,SORT_Code)
+Variable.UDT.uHFab.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uHFab.Define("Part",String,Part)
+Variable.UDT.uHFab.Define("DESCr",String,Description)
+Variable.UDT.uHFab.Define("Order_Qty",Float,Order_Qty)
+Variable.UDT.uHFab.Define("Due_Date",Date,Due_Date)
+Variable.UDT.uHFab.Define("Job",String,Job)
+Variable.UDT.uHFab.Define("Suffix",String,Suffix)
+Variable.uGlobal.uHFab.Declare("uHFab")
+Variable.UDT.uDFab.Define("BIRUNID",String,BIRUNID)
+Variable.UDT.uDFab.Define("Program",String,Program)
+variable.UDT.uDFab.Define("Top_Level_Parent",String,Top_Level_Parent)
+Variable.UDT.uDFab.Define("Part",String,Part)
+Variable.UDT.uDFab.Define("Rev",String,Rev)
+Variable.UDT.uDFab.Define("DESC",String,Description)
+Variable.UDT.uDFab.Define("Qty",Float,Qty)
+Variable.UDT.uDFab.Define("Shear_Size",String,Shear_Size)
+Variable.UDT.uDFab.Define("Material",String,Material)
+Variable.UDT.uDFab.Define("Dept",String,Department)
+Variable.uGlobal.uDFab.Declare("uDFab")
+Variable.Global.OrderLine.Declare(String)
+Variable.Global.QtyOrder.Declare(Float,0)
+Variable.Global.DateDue.Declare(Date,01/01/1900)
+Variable.Global.iBIRUNID.Declare(Long,0)
+Variable.Global.iLogID.Declare(Long,0)
+
+Variable.Global.sCodeException.Declare(String)
+Variable.Global.sCodeTotal.Declare(String)
+Variable.uGlobal.uDPurch.Declare("uDPurch")
+Program.Sub.Preflight.End
+
+'ARC#6649
+'Cus MESTEX
+' Custom hook/Menu Item
+' Feb 2022 - Nam Le
+
+'MESTEX is needing a file export for their nesting software. This is not a standard nesting interface and will require a custom script to perform the export they're looking for. This will need to run from it's own menu item and require a user interface to select a BOM parent work order.
+
+'This project is built on GCG_3920, also built specifically for MESTEX, author: unknown
+
+'What's new:
+'	- instead of calling the BI Report after building the tables, this script would call for function ExportNesting()
+'	- ExportNesting() will gather info as requested by MESTES and export to CSV file
+Program.Sub.Main.Start
+F.Intrinsic.Control.SetErrorHandler("Main_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.ODBC.Connection!conX.OpenConnection(v.Ambient.PDSN,v.Ambient.PUser,v.Ambient.PPass)
+'gui.SS_Form1.txtJob.Locked(True)
+gui.SS_Form1.txtSuffix.Locked(True)
+gui.SS_Form1.txtSuffix.Text("000")
+
+gui.SS_Form1.dtpDate.Value(v.Ambient.Date)
+v.uGlobal.uEngHead.Redim(-1,-1)
+v.uGlobal.uBOM.Redim(-1,-1) 
+v.uGlobal.uEngRelDet.Redim(-1,-1)
+v.uGlobal.uDSTDBOM.Redim(-1,-1) 
+v.uGlobal.uHSTDBom.Redim(-1,-1) 
+v.uGlobal.uHFab.Redim(-1,-1)
+v.uGlobal.uDFab.Redim(-1,-1) 
+v.uGlobal.uHPurch.Redim(-1,-1)
+v.uGlobal.uDPurch.Redim(-1,-1)
+gui.SS_Form1..Show
+gui.SS_Form1.txtJob.SetFocus
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Main_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Main.End
+
+Program.Sub.cmdBrowser_Click.Start
+F.Intrinsic.Control.SetErrorHandler("cmdBrowser_Click_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sTitle.Declare(String)
+v.Local.iWidth.Declare(Long)
+v.Local.sRet.Declare(String)
+'browser for our top level workorders where sequence is 000 
+f.Intrinsic.String.Split("Job*!*Suffix*!*Desc*!*Part*!*Date Due","*!*",v.Local.sTitle)
+f.Intrinsic.String.Split("1500*!*1000*!*2000*!*1500*!*1500","*!*",v.Local.iWidth)
+
+ f.Intrinsic.UI.Browser("Select A Work Order","conX","Select Job,Suffix,Description,Part,Date_Due From V_Job_Header Where Suffix = '000'",v.Local.sTitle,v.Local.iWidth,v.Local.sRet) 
+f.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"***CANCEL***") 
+	f.Intrinsic.String.Split(v.Local.sret,"*!*",v.Local.sRet) 
+	gui.SS_Form1.txtJob.Text(v.Local.sRet(0)) 
+	gui.SS_Form1.txtSuffix.Text(v.Local.sRet(1))
+Function.Intrinsic.Control.Else 
+	gui.SS_Form1.txtJob.Text("")
+'	gui.SS_Form1.txtSuffix.Text("") 
+Function.Intrinsic.Control.EndIf
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("cmdBrowser_Click_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.cmdBrowser_Click.End
+
+Program.Sub.cmdPrint_Click.Start
+'F.Intrinsic.Control.SetErrorHandler("cmdPrint_Click_Err")
+'F.Intrinsic.Control.ClearErrors
+f.Intrinsic.Control.Try
+
+	V.Local.sError.Declare(String)
+	v.Local.sSQL.Declare(String) 
+	v.Local.sRet.Declare(String)
+	v.Local.sOrdDate.Declare(String)
+	
+	gui.SS_Form1..Visible(False)
+	'is the part on the work order a bom? 
+	'f.Intrinsic.String.Build("Select Part From V_JOB_Header Where Job = '{0}' And Suffix = '{1}'",v.Screen.SS_Form1!txtJob.Text.trim,v.Screen.SS_Form1!txtSuffix.Text.trim.v.local.sSQL)
+	F.Intrinsic.String.Build("Select Part From V_JOB_HEADER WHERE Job = '{0}' And Suffix = '{1}'",v.Screen.SS_Form1!txtJob.Text.trim,v.Screen.SS_Form1!txtSuffix.Text.trim,v.Local.sSQL)
+	
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+	Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,<>,True) 
+		f.Intrinsic.UI.InvokeWaitDialog("Processing...")
+		'get run id and log
+		f.Global.BI.GetRunID(v.Global.iBIRUNID)
+		f.Global.BI.StartLogging(v.Global.iBIRUNID,-1,-1,"",v.Global.iLogID)
+	
+		'great grab the part
+		v.Global.sJob.Set(v.Screen.SS_Form1!txtJob.text) 
+		v.Global.sSuffix.Set(v.Screen.SS_Form1!txtSuffix.Text)
+		v.global.sPart.Set(v.ODBC.conX!rst.FieldValTrim!Part) 
+		
+		'get code exception since that is used on the top level parent determinatn 
+		F.Intrinsic.String.Build("Select Code_Exception From V_Inventory_MSTR Where Part = '{0}'", v.Global.sPart,v.Local.sSQL) 
+		F.ODBC.Connection!conX.OpenLocalRecordsetRO("rstE",v.Local.sSQL) 
+		Function.Intrinsic.Control.If(v.ODBC.conX!rstE.EOF,=,False) 
+			v.Global.sCodeException.Set(v.ODBC.conX!rstE.FieldValTrim!Code_Exception) 
+			f.Intrinsic.String.UCase(v.Global.sCodeException,v.Global.sCodeException) 
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rstE.Close 
+		
+		'now get our bom from callwrapper 
+		Function.Intrinsic.Control.CallSub(explode_bom,"BOM",v.Global.sPart)
+	
+		f.Intrinsic.Control.If(v.uGlobal.uBOM.UBound,<>,-1)
+	
+		
+			'then get the rest of the part s
+			Function.Intrinsic.Control.CallSub(get_engineering)
+			
+			Function.Intrinsic.Control.CallSub(get_boms) 
+			'this will get both for purchased report and fabrication reports
+			
+			'not running fabric
+			f.Intrinsic.Control.CallSub(get_fabrication) 
+			
+			f.Intrinsic.Control.CallSub(udt_recordsets)
+			
+			'GCG_6649
+			f.Intrinsic.Control.CallSub(ExportNesting)
+			
+	'		Function.Intrinsic.Control.CallSub(callbi)
+		Function.Intrinsic.Control.EndIf
+	
+	Function.Intrinsic.Control.Else 
+		F.Intrinsic.UI.Msgbox("Part on Job is not a BOM") 
+		f.Intrinsic.Control.CallSub(ss_form1_unload)
+	Function.Intrinsic.Control.EndIf
+	F.Intrinsic.Control.ExitSub
+
+f.Intrinsic.Control.Catch
+	f.Intrinsic.UI.Msgbox(v.Ambient.ErrorDescription)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+	
+f.Intrinsic.Control.EndTry
+
+'F.Intrinsic.Control.Label("cmdPrint_Click_Err")
+'F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+'	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+'	F.Intrinsic.UI.Msgbox(V.Local.sError)
+'	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+'Function.Intrinsic.Control.EndIf
+
+Program.Sub.cmdPrint_Click.End
+
+'GCG_6649
+'gather info and export
+Program.Sub.ExportNesting.Start
+f.Intrinsic.Control.Try
+	v.Local.sSQL.Declare(String)
+	v.Local.sRet.Declare(String)
+	v.Local.sContent.Declare(String)
+	V.Local.sFileName.Declare(String)
+	v.Local.bExtension.Declare(Boolean)
+	v.Local.sOrdDate.Declare(String)
+	v.Local.sOutputFile.Declare(String)
+	'------------------------------------------------------------
+	
+	'Mar 01 - Multiply for ORDER_QTY on V_JOB_HEADER
+	'	and exclude PART that Manufactured to Stock
+	f.Intrinsic.String.Build("select RTRIM(M.PART) PART, RTRIM(M.REV) REV, SUM(M.QTY) QTY, RTRIM(OP.OPTICODE) OPTICODE, RTRIM(DP.PRIORITY) PRIORITY from GCG_3929_Fab_Lst_Dtl M left join GCG_6649_OPTICODE OP on RTRIM(M.MATERIAL) = RTRIM(OP.GLOBALSHOP) left join GCG_6649_DEPT_PRIO DP on RTRIM(M.DEPARTMENT) = RTRIM(DP.DEPT) left join GCG_3929_Fab_Lst_Hdr HD on RTRIM(HD.PART) = RTRIM(M.TOP_LEVEL_PARENT) and M.BIRUNID = HD.BIRUNID where M.BIRUNID={0} and RTRIM(OP.OPTICODE)<>'' and PART not in (select RTRIM(PART) from V_INVENTORY_MST2 where CODE_SOURCE='M') group by PART, REV, OPTICODE, PRIORITY order by PART", v.Global.iBIRUNID, v.Local.sSQL)
+	
+	'test
+	f.Intrinsic.Control.If(v.DataTable.dtNestExport.Exists)
+		f.Data.DataTable.Close("dtNestExport")
+	f.Intrinsic.Control.EndIf
+	f.Data.DataTable.CreateFromSQL("dtNestExport", "Conx", v.Local.sSQL, True)
+	
+	
+	f.Intrinsic.Control.If(v.DataTable.dtNestExport.RowCount,=,0)
+		f.Intrinsic.UI.Msgbox("No Record Match the Criteria")
+		f.Intrinsic.Control.CallSub(SS_Form1_Unload)
+	f.Intrinsic.Control.EndIf
+	
+	f.Data.DataTable.AddColumn("dtNestExport", "ORDERNO", "String")
+	f.Data.DataTable.AddColumn("dtNestExport", "ORDDATE", "String")
+	
+	'ORDERNO
+	f.Data.DataTable.SetValue("dtNestExport", -1, "ORDERNO", v.Global.sJob)
+	
+	'ORDDATE
+	f.Intrinsic.String.Build("select top 1 DATE_DUE-21 from V_JOB_HEADER where RTRIM(JOB)='{0}' and SUFFIX = '000'", v.Global.sJob.Trim, v.Local.sSQL)
+	v.Local.sRet.Set("")
+	f.ODBC.Connection!conX.ExecuteAndReturn(v.Local.sSQL, v.Local.sRet)
+	f.Intrinsic.Control.If(v.Local.sRet,!=,"")
+		f.Intrinsic.String.Format(v.Local.sRet, "MM/DD/YYYY", v.Local.sOrdDate)
+		f.Data.DataTable.SetValue("dtNestExport", -1, "ORDDATE", v.Local.sOrdDate)
+	f.Intrinsic.Control.EndIf
+	
+	f.Data.DataView.Create("dtNestExport", "dvExportData", 22)
+	f.Data.DataView.ToString("dtNestExport", "dvExportData", "PART*!*REV*!*QTY*!*ORDDATE*!*ORDERNO*!*OPTICODE*!*PRIORITY", ",", v.Ambient.NewLine, v.Local.sContent)
+	f.Intrinsic.String.Build("OPTI_CSV_{0}", v.Global.sJob, v.Local.sOutputFile)
+	F.Intrinsic.UI.ShowSaveFileDialog(v.Local.sOutputFile, "csv", "Nesting Data Export.txt", "Nesting Data Export", V.Local.sFileName)
+	
+	F.Intrinsic.Control.If(V.Local.sFileName, <>, "***CANCEL***")
+		'Extension
+		f.Intrinsic.String.IsInString(v.Local.sFileName.UCase, ".TXT", True, v.Local.bExtension)
+		f.Intrinsic.Control.If(v.Local.bExtension,=,False)
+			f.Intrinsic.String.Build("{0}.txt", v.Local.sFileName, v.Local.sFileName)
+		f.Intrinsic.Control.EndIf
+		
+		'export
+		f.Intrinsic.File.String2File(v.Local.sFileName, v.Local.sContent)
+		
+	F.Intrinsic.Control.EndIf
+	
+	
+	'------------------------------------------------------------
+f.Intrinsic.Control.Catch
+	f.Intrinsic.UI.Msgbox(v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.ExportNesting.End
+
+Program.Sub.SS_Form1_Unload.Start
+F.Intrinsic.Control.SetErrorHandler("SS_Form1_Unload_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+f.ODBC.Connection!conX.Close
+f.Intrinsic.UI.CloseWaitDialog
+Function.Intrinsic.Control.End
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("SS_Form1_Unload_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.End
+Function.Intrinsic.Control.EndIf
+Program.Sub.SS_Form1_Unload.End
+
+Program.Sub.Explode_BOM.Start
+F.Intrinsic.Control.SetErrorHandler("Explode_BOM_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sFilePath.Declare(String)
+v.Local.sFile.Declare(String)
+v.Local.sPart.Declare(String)
+v.Local.sPartFile.Declare(STring)
+v.Local.iLoop.Declare(Long)
+v.Local.icount.Declare(Long)
+v.Local.sRet.Declare(String)
+v.Local.iUB.Declare(Long)
+V.Local.sSQL.Declare(String)
+
+v.Local.sPart.Set(v.Args.BOM)
+
+F.Intrinsic.String.Concat(V.System.Temp,"\EXPLODEBOM",V.Caller.Terminal,".txt",V.Local.sFilePath)
+f.Intrinsic.String.Build("0{0}{1}{0}{2}",v.Ambient.Tab,v.Local.sPart,v.Local.sFile)
+F.Intrinsic.File.String2File(V.Local.sFilePath,V.Local.sFile)
+F.Global.General.CallWrapperSync(410000,V.Local.sFilePath)
+f.Intrinsic.File.File2StringArray(v.Local.sFilePath,v.Ambient.Tab,v.Local.sFile)
+F.Intrinsic.File.GetFileNameFromFQN(V.Local.sFile(3),V.Local.sFile.Trim)
+Function.Intrinsic.String.Split(v.Local.sFile," ",v.Local.sFile)
+F.Intrinsic.String.Concat(V.System.Temp,"\",V.Local.sFile(0).Trim,V.Local.sFilePath.Trim)
+F.Intrinsic.File.File2String(V.Local.sFilePath,V.Local.sPartFile)
+F.Intrinsic.String.Split(V.Local.sPartFile,V.Ambient.NewLine,V.Local.sPartFile)
+F.Intrinsic.Math.Sub(V.Local.sPartFile.UBound,1,V.Local.iLoop)
+
+F.Intrinsic.Control.For(V.Local.iCount,8,V.Local.iLoop,1)
+	'Split each line by |~|
+	F.Intrinsic.String.Split(V.Local.sPartFile(v.Local.iCount),"|~|",V.Local.sRet)
+	'1 Level 
+	'2 Compnent Par t
+	'3 Description on BOM 
+	'4 CATegory
+	'5 Source
+	'6 Quantity 
+	'12 Parent 
+	f.Intrinsic.Control.If(v.uGlobal.uBOM.UBound,=,-1) 
+		v.uGlobal.uBOM.Redim(0,0)
+		v.Local.iUB.Set(0) 
+	Function.Intrinsic.Control.Else 
+		f.Intrinsic.Math.Add(v.uGlobal.uBOM.UBound,1,v.Local.iUB) 
+		v.uGlobal.uBOM.RedimPreserve(0,v.Local.iUB) 
+	Function.Intrinsic.Control.EndIf
+	
+	v.uGlobal.uBOM(v.Local.iUB)!Level.Set(v.Local.sRet(1)) 
+	v.uGlobal.uBOM(v.Local.iUB)!Parent.Set(v.Local.sRet(12)) 
+	v.uGlobal.uBOM(v.Local.iUB)!Component.Set(v.Local.sRet(2))
+	V.uGlobal.uBOM(v.Local.iUB)!BOM_Desc.Set(v.Local.sRet(3))
+	v.uGlobal.uBOM(v.Local.iUB)!Qty.Set(v.Local.sRet(6))
+
+f.Intrinsic.Control.Next(v.Local.icount)
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Explode_BOM_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Explode_BOM.End
+
+Program.Sub.Get_Engineering.Start
+f.Intrinsic.Control.Try
+'	F.Intrinsic.Control.SetErrorHandler("Get_Engineering_Err")
+'	F.Intrinsic.Control.ClearErrors
+	
+	V.Local.sError.Declare(String)
+	v.Local.sSQL.Declare(String) 
+	v.Local.sRet.Declare(STring)
+	v.Local.iR.Declare(Long)
+	v.Local.iUB.Declare(Long)
+	v.Local.iLen.Declare(Long)
+	v.Local.iTotLen.Declare(long)
+	v.Local.sTemp.Declare(String)
+	v.Local.sAssy.Declare(String)
+	v.Local.iF.Declare(Long)
+	V.Local.sFirst.Declare(String) 
+	v.Local.iS.Declare(Long)
+	v.Local.sSecond.Declare(String) 
+	v.Local.iT.Declare(LOng)
+	v.Local.fQty.Declare(Float)
+	
+	v.Local.bIsNumeric.Declare(Boolean)
+	
+	'This sub we are only worried about the TOp level Parent Part (from WORKORDER) and the 1st level components. All other will be ignored. 
+	'This is the Engineering Release report header information. 
+	'Header Information Inludes: Part(From WO) Order_Number(Assocaited to WO), Description (WO) Date Field(Screen) Issue By (Screen, EXCP Field(Inventory) 
+	'get header information from job 
+	
+'	f.Intrinsic.String.Build("Select Part,Description,Sales_Order,Sales_Order_Line,Qty_Order From V_JOB_Header Where JOb = '{0}' And Suffix = '{1}' And Job <> '' And Suffix <>'' And Sales_ORDER <> '0000000' And Sales_Order_Line <> '000'",v.Global.sJob,v.Global.sSuffix,v.Local.sSQL)
+	f.Intrinsic.String.Build("Select Part,Description,Sales_Order,Sales_Order_Line,Qty_Order From V_JOB_Header Where JOb = '{0}' And Suffix = '{1}' And Job <> '' And Suffix <>''",v.Global.sJob,v.Global.sSuffix,v.Local.sSQL)
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+	f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		'Header 
+		Function.Intrinsic.Control.If(v.uGlobal.uEngHead.UBound,=,-1)
+			v.Local.iUB.Set(0)
+			v.uGlobal.uEngHead.Redim(0,0)
+		Function.Intrinsic.Control.Else 
+			f.Intrinsic.Math.Add(v.uGlobal.uEngHead.UBound,1,v.Local.iUB) 
+			v.uGlobal.uEngHead.RedimPreserve(0,v.Local.iUB) 
+		Function.Intrinsic.Control.EndIf
+	
+		v.uGlobal.uEngHead(v.Local.iUB)!BIRUNID.Set(v.Global.iBIRUNID)
+		v.uGlobal.uEngHead(v.Local.iUB)!Part.Set(v.Global.sPart) 
+		v.uGlobal.uEngHead(v.Local.iUB)!Description.Set(v.ODBC.conx!rst.FieldValTrim!Description) 
+		v.uGlobal.uEngHead(v.Local.iub)!Order_Number.Set(v.ODBC.conX!rst.FieldValTrim!Sales_Order) 
+		v.Global.OrderLine.Set(v.ODBC.conX!rst.FieldValTrim!Sales_Order_Line)
+		v.uGlobal.uEngHead(v.Local.iUB)!Order_Line.Set(v.Global.OrderLine)
+		
+		'6649
+		f.Intrinsic.Math.IsNumeric(v.ODBC.conX!rst.FieldValFloat!Qty_Order, v.Local.bIsNumeric)
+		f.Intrinsic.Control.If(v.Local.bIsNumeric)
+			v.Global.QtyOrder.Set(v.ODBC.conX!rst.FieldValFloat!Qty_Order)
+		f.Intrinsic.Control.Else
+			v.Global.QtyOrder.Set(0)
+		f.Intrinsic.Control.EndIf
+		v.uGlobal.uEngHead(v.Local.iUB)!Issue_By.Set(v.Screen.SS_Form1!txtIssue.Text.trim)
+		v.uGlobal.uEngHead(v.Local.iUB)!Date.Set(v.Screen.SS_Form1!dtpDate.Value)
+	
+		f.ODBC.conX!rst.Close
+	
+		F.Intrinsic.String.Build("Select Code_Exception From V_Inventory_MSTR Where Part = '{0}'",v.Global.sPart,v.Local.sSQL) 
+		f.ODBC.Connection!conX.OpenLocalRecordsetRO("Rst", v.Local.sSQL) 
+		Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+			'get Inventory Excep field
+			v.uGlobal.uEngHead(v.Local.iUB)!Exception_Flag.Set(v.ODBC.conX!rst.FieldValTrim!Code_Exception)
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close 
+	
+		f.Intrinsic.Control.For(v.Local.iR,0,v.uGlobal.uBOM.UBound,1)
+			'grab each piece of information for each piece of the part. if assembly it's got ot have a length of 14 and have assy bom of y in inventory record
+			'not include special characters. Strip it first in temp then get length
+			'make sure we dont' already have it within our udt. 
+			f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uEngRelDet!Component,v.uGlobal.uBOM(v.Local.iR)!Component,v.Local.sRet)
+			Function.Intrinsic.Control.If(v.Local.sRet.Trim,=,"")
+				f.Intrinsic.String.StripCharacters(v.uGlobal.uBOM(v.Local.iR)!Component,v.Local.sTemp)
+				'regex match and only grab numbers out of it. 
+				'F.Intrinsic.String.RegExMatch(v.Local.sTemp,"\d+",True,v.Local.sTemp)
+				F.Intrinsic.String.RegExMatch(v.Local.sTemp,"\d+",True,False,True,v.Local.sTemp)
+	
+				f.Intrinsic.Control.If(v.Local.sTemp.Trim,<>,"") 
+					f.Intrinsic.String.Split(v.Local.sTemp,"@!@",v.Local.sFirst)
+					f.Intrinsic.Control.for(v.Local.iF,0,v.Local.sFirst.UBound,1)
+						f.Intrinsic.String.Split(v.Local.sFirst(v.Local.if),"*!*",v.Local.sSecond)
+						f.Intrinsic.String.Len(v.Local.sSecond(1),v.Local.iLen)
+						f.Intrinsic.Math.Add(v.Local.iTotLen,v.Local.iLen,v.Local.iTotLen)
+					f.Intrinsic.Control.Next(v.Local.if)
+				Function.Intrinsic.Control.EndIf
+	
+				'return must be split by @!@ then for each *!* then read element 1 then add those together using length.
+		'		f.Intrinsic.String.Len(v.Local.sTemp,v.Local.iLen)				
+				'partially an assembly so check field ininventory record 
+				f.Intrinsic.string.Build("Select UCase(Text_Info1) As Assy From V_Inventory_Mst2 Where Part = '{0}'",v.uGlobal.uBOM(v.Local.iR)!Component,v.Local.sSQL)
+				f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+				Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+					v.Local.sAssy.Set(v.ODBC.conX!rst.FieldValTrim!Assy)
+				Function.Intrinsic.Control.Else 
+					v.Local.sAssy.set("")
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conx!rst.Close
+		'		f.Intrinsic.Control.If(v.Local.iLen,=,14,"OR",v.Local.sAssy,=,"Y")
+				'confirmed that it's an either or comparison. 
+				F.Intrinsic.Control.If(v.Local.iTotLen,=,14,"OR",v.Local.sAssy,=,"Y") 
+					'its an assembly add info to EngDet udt
+					Function.Intrinsic.Control.If(v.uGlobal.uEngRelDet.UBound,=,-1)
+						v.Local.iUB.Set(0)
+						v.uGlobal.uEngRelDet.Redim(0,0)
+					Function.Intrinsic.Control.Else 
+						f.Intrinsic.Math.Add(v.uGlobal.uEngRelDet.UBound,1,v.Local.iUB) 
+						v.uGlobal.uEngRelDet.RedimPreserve(0,v.Local.iUB) 
+					Function.Intrinsic.Control.EndIf
+	
+					v.uGlobal.uEngRelDet(v.Local.iUB)!BIRUNID.set(v.Global.iBIRUNID)
+					v.uGlobal.uEngRelDet(v.Local.iUB)!Parent.Set(v.Global.sPart)
+					v.uGlobal.uEngRelDet(v.Local.iUB)!Component.Set(v.uGlobal.uBOM(v.Local.iR)!Component)
+	
+					F.Intrinsic.String.Build("Select Description From V_Inventory_MSTR WHere Part = '{0}'",v.uGlobal.uBOM(v.Local.iR)!Component,v.Local.sSQL) 
+					f.ODBC.Connection!conX.OpenLocalRecordsetRO("rstDesc",v.Local.sSQL) 
+					Function.Intrinsic.Control.If(v.ODBC.conX!rstDesc.EOF,=,False)
+						v.uGlobal.uEngRelDet(v.Local.iUB)!Description.Set(v.ODBC.conX!rstDesc.FieldValTrim!Description) 
+					Function.Intrinsic.Control.Else 
+						v.uGlobal.uEngRelDet(v.Local.iUB)!Description.Set("Desc Not Found") 
+					Function.Intrinsic.Control.EndIf
+					f.ODBC.conX!rstDesc.Close
+	
+	
+					'qty is a summ of everywhere this is used.
+					F.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uBOM!Component,v.uGlobal.uEngRelDet(v.Local.iUB)!Component,v.Local.sTemp) 
+					f.Intrinsic.Control.If(v.Local.sTemp.Trim,<>,"") 
+						f.Intrinsic.String.Split(v.Local.sTemp,"*!*",v.Local.sTemp) 
+						f.Intrinsic.Control.For(v.Local.iT,0,v.Local.sTemp.UBound,1)
+							
+							'6649
+							f.Intrinsic.Math.IsNumeric(v.uGlobal.uBOM(v.Local.sTemp(v.Local.iT))!Qty, v.Local.bIsNumeric)
+							f.Intrinsic.Control.If(v.Local.bIsNumeric)
+								f.Intrinsic.Math.Add(v.uGlobal.uBOM(v.Local.sTemp(v.Local.iT))!Qty,v.Local.fQty,v.Local.fQty)
+							f.Intrinsic.Control.Else
+								f.Intrinsic.Math.Add(0,v.Local.fQty,v.Local.fQty)
+							f.Intrinsic.Control.EndIf
+						f.Intrinsic.Control.Next(v.Local.iT)					
+					Function.Intrinsic.Control.Else 
+						v.Local.fQty.Set(0)
+					Function.Intrinsic.Control.EndIf
+	
+					v.uGlobal.uEngRelDet(v.Local.iUB)!Qty.Set(v.Local.fQty)	
+					v.Local.iTotLen.Set(0)
+					v.Local.fQty.Set(0)
+				Function.Intrinsic.Control.Else 
+					'part wasn't 14 characters
+					function.Intrinsic.Debug.SetLA("Part: ",v.uGlobal.uBOM(v.Local.iR)!Component, "wasn't 14 characters long OR Assy ",v.Local.sassy," wasn't equal to y. Skip it") 
+					v.Local.iTotlen.Set(0)
+				Function.Intrinsic.Control.EndIf
+			Function.Intrinsic.Control.Else 
+				f.Intrinsic.Debug.SetLA("Part ",v.uGlobal.uBOM(v.Local.iR)!Component," already found in the udt Dont repeat it.")
+			f.Intrinsic.Control.Endif		
+		f.Intrinsic.Control.Next(v.Local.iR) 
+	'	f.Intrinsic.Control.EndIf
+	
+	Function.Intrinsic.Control.Else 
+		f.ODBC.conX!rst.Close
+		f.Intrinsic.UI.Msgbox("The selected job is not associated to a sales order.","No Work was done...")
+		Function.Intrinsic.Control.CallSub(ss_form1_unload)
+	Function.Intrinsic.Control.EndIf
+	
+	F.Intrinsic.Control.ExitSub
+	
+'	F.Intrinsic.Control.Label("Get_Engineering_Err")
+'	F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+'		Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+'		F.Intrinsic.UI.Msgbox(V.Local.sError)
+'		Function.Intrinsic.Control.CallSub(ss_form1_unload)
+'	Function.Intrinsic.Control.EndIf
+	
+f.Intrinsic.Control.Catch
+f.Intrinsic.UI.Msgbox(v.Ambient.ErrorDescription)
+f.Intrinsic.Control.EndTry
+Program.Sub.Get_Engineering.End
+
+Program.Sub.Get_Boms.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Boms_Err")
+F.Intrinsic.Control.ClearErrors
+
+'This sub will be used to build our assembly parts and get their bom information. We are going to 
+V.Local.sError.Declare(String)
+v.Local.sT.Declare(String)
+v.Local.sSQL.Declare(STring) 
+v.Local.sRet.Declare(STring) 
+v.Local.iR.Declare(Long) 
+v.Local.iC.Declare(Long)
+v.Local.iUB.Declare(Long)
+v.Local.sDept.Declare(String) 
+V.Local.fDim1.Declare(String) 
+v.Local.fDim2.Declare(String)
+V.Local.sMat.Declare(String)
+V.Local.sPart.Declare(String)
+v.Local.sCheck.Declare(String)
+
+
+'Our Assemblies should be BOM Parents themselves. 
+'we are going to go through out assemblies and then our uBom looking for it as a parent. If it is then we are going to grab information that we need. 
+F.Intrinsic.Control.For(v.Local.ic,0,v.uGlobal.uEngRelDet.UBound,1) 
+	'look in our uBom for the Assymbly to be a Parent? is it? 
+	F.Intrinsic.Variable.udtmultiseek(v.uGlobal.uBOM!Parent,v.uGlobal.uEngRelDet(v.Local.iC)!Component,v.Local.sRet) 
+
+	F.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"")
+
+		F.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet) 
+		'then read through it and grab our header information then our detail information for the bomn. 
+
+		'grab header information Work Order, BOM Parent(Assembly on First page), description from Inventory MSTR, BOM checked(memo Line 2)from BOM record,qty 
+		'BOM_ENG.MEMO_2 field is BOM Checked value. 
+		f.Intrinsic.Control.If(v.uGlobal.uHStdBOM.UBound,=,-1) 
+			v.uGlobal.uHStdBOM.Redim(0,0) 
+			v.Local.iUB.Set(0)
+		Function.Intrinsic.Control.Else 
+			f.Intrinsic.Math.Add(v.uGlobal.uHStdBOM.UBound,1,v.Local.iUB) 
+			v.uGlobal.uHStdBOM.RedimPreserve(0,v.Local.iUB)
+		F.Intrinsic.Control.endif
+
+		'set the BOM parent as the Component from our Assy
+		v.uGlobal.uHStdBOM(v.Local.iUB)!Parent.Set(v.uGlobal.uEngRelDet(v.Local.ic)!Component) 
+
+		'Work order
+'		Function.Intrinsic.String.Build("{0}  {1}", v.global.sJob,v.Global.sSuffix,v.Local.sT) 
+		v.uGlobal.uHStdBOM(v.Local.iUB)!Job.Set(v.Global.sJob.Trim) 
+		v.uGlobal.uHStdBOM(v.Local.iUB)!Suffix.Set(v.Global.sSuffix.trim)
+
+		'qty 
+		'grab qty from BOM where Parent is componenet 
+'		
+'
+'
+'
+'
+'		F.Intrinsic.String.Build("Select Quantity From V_BOM_MSTR WHere Part = '{0}' And Parent = '{1}And Sequence_BOM <>'0000'",v.uGlobal.uEngRelDet(v.Local.iC)!Component,v.uGlobal.uEngRelDet(v.Local.iC)!Parent,v.Local.sSQL)		
+'		f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.ssQL)
+'		Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+'			v.uGlobal.uHStdBOM(v.Local.iUB)!Qty.set(v.ODBC.conX!rst.FieldVal!Quantity)
+'		Function.Intrinsic.Control.EndIf
+'		f.ODBC.conX!rst.Close
+		v.uGlobal.uHStdBOM(v.Local.iUB)!Qty.Set(v.uGlobal.uEngRelDet(v.Local.iC)!Qty)
+
+
+		'Description from INV Master for the Part
+		f.Intrinsic.String.Build("Select Description From V_Inventory_MSTR WHere Part = '{0}'", v.uGlobal.uEngRelDet(v.Local.iC)!Component,v.Local.sSQL) 
+		f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst", v.Local.sSQL) 
+		F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+			v.uGlobal.uHStdBOM(v.Local.iUB)!Description.Set(v.ODBC.conX!rst.FieldValTrim!Description) 
+		Function.Intrinsic.Control.Else	
+			'going to use the one from the bom as default 
+			v.uGlobal.uHStdBOM(v.Local.iUB)!Description.Set("")
+		Function.Intrinsic.Control.EndIf 
+		f.ODBC.conX!rst.Close 
+		'BOM Checked Filed 
+		F.Intrinsic.String.Build("Select Memo_2 From V_BOM_ENG Where Part ='{0}'",v.uGlobal.uEngRelDet(v.Local.iC)!Component,v.Local.sSQL) 
+		F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+		F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+'			'memo 1 grab is hear to be used in details
+'			v.Local.sDept.Set(v.ODBC.conX!rst.FieldValTrim!Memo_1)z
+			'memo 2 is BomChecked
+			v.uGlobal.uHStdBOM(v.Local.iUB)!BOM_Checked.Set(v.ODBC.conX!rst.FieldValTrim!Memo_2) 
+		Function.Intrinsic.Control.Else 
+			v.Local.sDept.Set("")
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close
+
+		'Rev Field from Inventory_MST2.Text_Info2
+		F.Intrinsic.String.Build("Select Text_Info2 From V_Inventory_MST2 Where Part ='{0}'",v.uGlobal.uEngRelDet(v.Local.iC)!Component,v.Local.sSQL) 
+		F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+		F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+			v.uGlobal.uHStdBOM(v.Local.iUB)!Rev.Set(v.ODBC.conX!rst.FieldValTrim!Text_Info2) 
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close
+
+		F.Intrinsic.Control.For(v.Local.iR,0,v.Local.sRet.UBound,1) 	
+			'have to make sure we already didn't catch this within our udt for the same parent?
+			F.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uDSTDBOM!Component,v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.uGlobal.uDSTDBOM!Parent,v.uGlobal.uBOM(v.Local.sret(v.Local.iR))!Parent,v.Local.sCheck)
+
+			f.Intrinsic.Control.If(v.Local.sCheck.Trim,=,"")
+				'means it's not in there we are good to go forward.
+				'now we are on our componenet of the BOM that we are on right now. 
+	'			v.Local.sRet(v.Local.iR) is our key
+				'we need Item (TAG FIELD IN MODIFY LINE ITEM) TAG in BOM MSTR, Part,Description,Qty Each, UM, Shear Size (Dimension_1 and Dimension_2 FRom BOM_CUTLIST Where this part we are on has a child and it's it's child value
+				'same with the Material field' program (XRef based on Part Where Manufactures Part starts with AMADA% Grab Man Name)  Dept (local variable)
+				'here we go. 
+				''Tag Part(Componet from UBOM), Description from UBOM QTY EACH From UBOM GOT TO QUERY UM
+				F.Intrinsic.Control.If(v.uGlobal.uDSTDBOM.UBound,=,-1) 			
+					v.Local.iUB.Set(0)
+					v.uGlobal.uDSTDBOM.Redim(0,0)
+				Function.Intrinsic.Control.Else 
+					f.Intrinsic.Math.Add(v.uGlobal.udstdbom.UBound,1,v.Local.iUB)
+					v.uGlobal.uDSTDBOM.RedimPreserve(0,v.Local.iuB)
+				Function.Intrinsic.Control.EndIf
+	
+				'set our Parent, and our Componenet first of all 
+				v.uGlobal.uDSTDBOM(v.Local.iUB)!Parent.Set(v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Parent) 
+				v.uGlobal.uDSTDBOM(v.Local.iUB)!Component.Set(v.uGlobal.ubom(v.Local.sRet(v.Local.iR))!Component) 
+				'desc 
+				v.uGlobal.uDSTDBOM(v.Local.iUB)!Desc.Set(v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!BOM_Desc) 
+	
+				'Rev Field from Inventory_MST2.Text_Info2
+				F.Intrinsic.String.Build("Select Text_Info2 From V_Inventory_MST2 Where Part ='{0}'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Rev.Set(v.ODBC.conX!rst.FieldValTrim!Text_Info2) 
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rst.Close
+	
+				'new 
+				'also have to get code exception and code total from the inventory master for the component. If it's a component we are going to determine the status of pulling our material value. 
+				F.Intrinsic.String.Build("Select Code_Exception,Code_Total From V_Inventory_MSTR Where Part ='{0}'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Code_Exception.Set(v.ODBC.conX!rst.FieldValTrim!Code_Exception) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Code_Total.Set(v.ODBC.conX!rst.FieldValTrim!Code_Total) 
+					'for later use update into BOM comp as well 
+					v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Code_Exception.Set(v.global.scodeexception)
+					v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Code_Total.Set(v.ODBC.conX!rst.FieldValTrim!Code_Total)
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rst.Close
+				'Progarm 
+				F.Intrinsic.String.Build("Select MFG_NAME From V_INV_Cross_Ref Where Part = '{0}' And UCASE(MFG_Part) Like '%AMADA%'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Program_NO.Set(v.ODBC.conX!rst.FieldValTrim!MFG_NAME)
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rst.Close
+	
+	
+				F.Intrinsic.String.Build("Select UM_Inventory, Tag,Quantity From V_BOM_MSTR WHERE PARENT = '{0}' And Part = '{1}'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Parent,v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Item.Set(v.ODBC.conX!rst.FieldValTrim!Tag) 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!UM.Set(v.ODBC.conX!rst.FieldValTrim!UM_INVENTORY)
+					v.uGlobal.uDSTDBOM(v.Local.iub)!Qty.set(v.ODBC.conX!rst.FieldValTrim!Quantity) 
+				Function.Intrinsic.Control.EndIf
+	
+				f.ODBC.conX!rst.Close 
+	
+				'get shear size. so that dim 1 + x +dim 2
+				'so now we are just going to look for where our component is our parent. 
+				f.Intrinsic.String.Build("Select isnull(Dimension_1,0) Dimension_1, isnull(Dimension_2,0) Dimension_2 From V_BOM_CutList Where Part = '{0}'",v.uglobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					F.Intrinsic.Control.If(v.ODBC.conX!rst.FieldValTrim!dimension_2,<=,0) 
+						F.Intrinsic.String.Format(v.ODBC.conX!rst.FieldValTrim!Dimension_1,"#.0000",v.Local.fDim1)
+						v.Local.sT.Set(v.Local.fDim1)
+					f.Intrinsic.Control.else 
+						F.Intrinsic.String.Format(v.ODBC.conX!rst.FieldValTrim!Dimension_1,"#.0000",v.Local.fDim1)
+						F.Intrinsic.String.Format(v.ODBC.conX!rst.FieldValTrim!Dimension_2,"#.0000",v.Local.fDim2)
+						f.Intrinsic.string.Build("{0} X {1}",v.Local.fDim1,v.Local.fDim2,v.Local.sT) 
+					f.Intrinsic.Control.EndIf
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Shear_Size.Set(v.Local.sT) 
+				Function.Intrinsic.Control.EndIf 
+				f.ODBC.conX!rst.Close 
+	
+				'department 
+				'memo 1 field of the component of the parent. 
+				'component being ubom(v.local.sret(v.local.ir)!Component
+	
+				F.Intrinsic.String.Build("Select Memo_1 From V_BOM_ENG Where Part ='{0}'",v.uGlobal.uBOM(V.Local.sRet(v.Local.iR))!Component,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+				F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		'			'memo 1 grab is hear to be used in details and it's the dept field 
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Dept.Set(v.ODBC.conX!rst.FieldValTrim!Memo_1)
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rst.Close
+	
+				'Material is from the Child of The Child? 
+	
+				F.Intrinsic.String.Build("Select * From BOM_MSTR WHERE Parent = '{0}' And Sequence_BOM  > '0000'", v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component, v.Local.sSQL) 
+				f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst", v.Local.sSQL) 
+				f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+					'make sure it's not an Assy Bom. Meaning it has a Y In INventory Master user field.
+					f.Intrinsic.string.Build("Select UCase(Text_Info1) As Assy From V_Inventory_Mst2 Where Part = '{0}'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Component,v.Local.sSQL)
+					F.ODBC.Connection!conX.OpenLocalRecordsetRO("rstAssy", v.Local.sSQL) 
+					Function.Intrinsic.Control.If(v.ODBC.conX!rstAssy.EOF,=,False) 
+						Function.Intrinsic.Control.If(v.ODBC.conX!rstAssy.FieldValTrim!ASSY,=,"Y")
+							v.Local.smat.Set("")
+						Function.Intrinsic.Control.Else
+							'then grab the part and get the BOM_ENG from their and grab the desc. 
+							F.Intrinsic.String.Build("Select Description From V_BOM_ENG Where Part = '{0}'",v.ODBC.conX!rst.fieldvaltrim!Part,v.Local.sSQL) 
+							F.ODBC.Connection!conX.OpenLocalRecordsetRO("rstMat",v.Local.sSQL) 
+							f.Intrinsic.Control.If(v.ODBC.conX!rstMat.EOF,=,False) 
+								v.Local.sMat.Set(v.ODBC.conX!rstMat.FieldValTrim!Description)
+								Function.Intrinsic.Control.If(v.Global.sCodeException,=,"P")
+									Function.Intrinsic.Control.If(v.uGlobal.uDSTDBOM(v.Local.iub)!Code_Total,=,"Y")
+										'string replace BS with PG in material 
+										f.Intrinsic.String.Replace(v.Local.sMat,"BS","PG",v.Local.sMat)
+									Function.Intrinsic.Control.EndIf
+								Function.Intrinsic.Control.ElseIf(v.Global.sCodeException,=,"S")
+									Function.Intrinsic.Control.If(v.uGlobal.uDSTDBOM(v.Local.iub)!Code_Total,=,"Y")
+										'string replace BS with PG in material 
+										f.Intrinsic.String.Replace(v.Local.sMat,"BS","304SS",v.Local.sMat)
+									Function.Intrinsic.Control.EndIf
+								Function.Intrinsic.Control.EndIf
+							Function.Intrinsic.Control.EndIf
+							f.ODBC.conX!rstMat.Close
+						Function.Intrinsic.Control.EndIf
+					Function.Intrinsic.Control.Else 
+						v.Local.sMat.set("")
+					Function.Intrinsic.Control.EndIf
+					f.ODBC.conX!rstAssy.Close
+					v.uGlobal.uDSTDBOM(v.Local.iUB)!Material.Set(v.Local.sMat)	
+				Function.Intrinsic.Control.EndIf
+	
+				f.ODBC.conX!rst.Close			
+			F.Intrinsic.Control.EndIf
+		F.Intrinsic.Control.Next(v.Local.iR) 		
+
+	Function.Intrinsic.Control.EndIf
+F.Intrinsic.Control.Next(v.Local.iC) 
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Boms_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	f.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Boms.End
+
+Program.Sub.Get_Fabrication.Start
+F.Intrinsic.Control.SetErrorHandler("Get_Fabrication_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sSQL.Declare(String) 
+v.Local.sRet.Declare(STring) 
+v.Local.iR.Declare(Long) 
+v.Local.iUB.Declare(Long)
+V.Local.sExtraText.Declare(String)
+v.Local.iC.Declare(Long)
+
+'here we get our parts that are farbicated parts. THe UM of these parts will not equal to PP. All of these parts do not have a Y in the ASSY BOM field. 
+'so we have this information(Sort of) we are going to go through our BOM udt. If it's found in the uEngRelH UDT as a parent we know that it's a parent (ASSY BOM) and it's not going to be in the fab list so skip it. 
+'it's basically getting all children (excluding parents in their own right) from the BOM TOP level Parent. but including all grandchildren that are part of children
+'Header 
+'Top Level Parent Description, Job # Order Qty from WORK ORDER, Due Date of Job
+'grab our top level parent information 
+
+'source code must be F 
+Function.Intrinsic.Control.If(v.uGlobal.uHFab.UBound,=,-1)
+	v.Local.iUB.Set(0)
+	v.uGlobal.uHFab.Redim(0,0)
+Function.Intrinsic.Control.Else
+	f.Intrinsic.Math.Add(v.uGlobal.uHFab.UBound,1,v.Local.iUB)
+	v.uGlobal.uHFab.RedimPreserve(0,v.Local.iUB)
+Function.Intrinsic.Control.EndIf
+
+'set our header information 
+f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uEngHead!Part,v.Global.spart,v.Local.sRet) 
+'we know it's our top level if it's blank 
+f.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"")
+	f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+
+	v.uGlobal.uHfab(v.Local.iUB)!Part.Set(v.uGlobal.uEngHead(v.Local.sRet(v.Local.iR))!Part) 
+	v.uGlobal.uHFab(v.Local.iUB)!Descr.Set(v.uGlobal.uEngHead(v.Local.sRet(v.Local.iR))!Description)	
+	'get our due date from the job, prolly could of done this better....
+	f.Intrinsic.String.Build("Select Date_DUe From V_JOB_HEADER WHERE JOB = '{0}' And Suffix = '{1}'",v.Global.sjob,v.Global.sSuffix.Trim,v.Local.sSQL) 
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+	Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		v.uGlobal.uHFab(v.Local.iC)!Due_Date.Set(v.ODBC.conX!rst.FieldVal!Date_Due)
+	Function.Intrinsic.Control.Else 
+		v.uGlobal.uHFab(v.Local.iC)!Due_Date.Set("01/01/1900")
+	Function.Intrinsic.Control.EndIf
+	v.Global.DateDue.Set(v.uGlobal.uHFab(v.Local.ic)!Due_Date)
+	f.ODBC.conX!rst.Close
+
+	'format 
+	v.uGlobal.uHFab(v.Local.iC)!Job.Set(v.Global.sJob.Trim)
+	v.uGlobal.uHFab(v.Local.iC)!Suffix.Set(v.Global.sSuffix.Trim)
+
+	v.uGlobal.uHFab(v.Local.ic)!Order_Qty.Set(v.Global.QtyOrder)
+
+	'also our our uHPur
+	f.Intrinsic.Control.If(v.uGlobal.uHPurch.UBound,=,-1)
+		v.Local.iUB.set(0)
+		v.uGlobal.uHPurch.Redim(0,0)
+	Function.Intrinsic.Control.Else
+		f.Intrinsic.Math.Add(v.uGlobal.uHPurch.UBound,1,v.Local.iUB)
+		v.uGlobal.uHPurch.RedimPreserve(0,v.Local.iUB)
+	Function.Intrinsic.Control.EndIf
+
+	v.uGlobal.uHPurch(v.Local.iUB)!Parent.Set(v.uGlobal.uEngHead(v.Local.sRet(v.Local.iR))!Part)
+	v.uGlobal.uHPurch(v.Local.iUB)!Order_NO.Set(v.uGlobal.uEngHead(v.Local.sRet(v.Local.iR))!Order_Number)
+	V.uGlobal.uHPurch(V.Local.iUB)!Order_Line.Set(v.Global.OrderLine)
+	v.uGlobal.uHPurch(v.Local.iUB)!Ord_Qty.Set(v.Global.QtyOrder)
+	v.uGlobal.uHPurch(v.Local.iUB)!Ship_Date.Set(v.Global.DateDue)
+	f.Intrinsic.String.Build("Select Description_2 From V_Inventory_MST2 Where Part = '{0}'",v.Global.sPart,v.Local.sSQL)
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+	Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,false)
+		v.uGlobal.uHPurch(v.Local.iUB)!RPM.Set(v.ODBC.conX!rst.FieldValTrim!Description_2)
+	Function.Intrinsic.Control.EndIf
+	f.ODBC.conX!rst.Close
+
+	v.uGlobal.uHPurch(v.Local.iUB)!Desc.Set(v.uGlobal.uEngHead(v.Local.sRet(v.Local.iR))!Description)
+
+	'TEXT_LINE 1 AND 2 FROM iNVENTORY EXTRA 
+	F.Intrinsic.String.Build("Select TEXT From V_INV_Extra_Text Where Part = '{0}'",v.Global.sPart,v.Local.sSQL)
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+	Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+		F.Intrinsic.String.Split(V.ODBC.conX!rst.FieldValTrim!TEXT,V.Ambient.NewLine,V.Local.sExtraText)
+		
+		F.Intrinsic.Control.If(V.Local.sExtraText.UBound,>,0)
+			v.uGlobal.uHPurch(v.Local.iUB)!Extra_Text_1.Set(V.Local.sExtraText(0))
+			v.uGlobal.uHPurch(v.Local.iUB)!Extra_Text_2.Set(V.Local.sExtraText(1))
+		F.Intrinsic.Control.Else
+			v.uGlobal.uHPurch(v.Local.iUB)!Extra_Text_1.Set(V.Local.sExtraText)
+			v.uGlobal.uHPurch(v.Local.iUB)!Extra_Text_2.Set("")		
+		F.Intrinsic.Control.EndIf
+	Function.Intrinsic.Control.EndIf
+	f.ODBC.conX!rst.Close
+
+	'Detail
+	'Program  # Part #, Descriptio, Qty, Shear Size, Material, Dept. 
+	'go through bom udt 
+	f.Intrinsic.Control.For(v.Local.iC,0,v.uGlobal.uBOM.UBound,1)
+		f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uHStdBOM!Parent,v.uGlobal.uBOM(v.Local.iC)!Component,v.Local.sRet) 
+
+		Function.Intrinsic.Control.If(v.Local.sRet.Trim,=,"")
+			'meaning it wasn't found as a parent lets get the information that we need for this Component
+			'make sure we already didn't grab it within their 
+			f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uDFab!Part,v.uGlobal.uBOM(v.Local.iC)!Component,v.Local.sRet)
+			F.Intrinsic.Control.If(v.Local.sret.Trim,=,"") 
+				'means we didn't get this part yet, we must grab it. 
+				'check the UM to make sure it's not equal to PP, if equal to pp call our other sub to populate our purchase information
+				'so what up with this now is that their original report is using code source of F for fabricated parts,
+				'and for the purchase list they are using 
+'				f.Intrinsic.String.Build("Select Product_Line From V_Inventory_MSTR Where Part = '{0}'",v.uGlobal.uBOM(v.Local.iC)!Component,v.Local.sSQL)
+				F.Intrinsic.String.Build("Select Code_Source From V_Inventory_MST2 Where Part = '{0}'", v.uGlobal.uBOM(V.Local.iC)!Component,v.Local.sSQL)
+
+				f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+
+				Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+					'is it PP or not 
+'					Function.Intrinsic.Control.If(v.ODBC.conX!rst.FieldValTrim!Product_Line,=,"PP")
+					'is it P or F 
+					F.Intrinsic.Control.If(v.ODBC.conX!rst.FieldValTrim!Code_Source,=,"P")
+						'it's a purchased part and should be added to our Purchased Report udt details
+						Function.Intrinsic.Control.CallSub(Purch_Details,"Parent",v.uGlobal.uBOM(v.Local.iC)!Parent,"Part",v.uGlobal.uBOM(v.Local.iC)!Component)
+					Function.Intrinsic.Control.ElseIf(v.ODBC.conX!rst.FieldValTrim!Code_Source,=,"F")
+						'its a fabricated part and should be added to our fab udt detail
+						Function.Intrinsic.Control.CallSub(fab_details,"Part",v.uGlobal.uBOM(v.Local.iC)!Component)
+					Function.Intrinsic.Control.EndIf
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rst.Close
+			Function.Intrinsic.Control.EndIf
+		Function.Intrinsic.Control.EndIf	
+
+	f.Intrinsic.Control.Next(v.Local.iC) 
+
+Function.Intrinsic.Control.Else 
+	Function.Intrinsic.Debug.SetLA("Something wasn't right. WE didn't find a header level top parent.") 
+	f.Intrinsic.Control.CallSub(ss_form1_unload)
+f.Intrinsic.Control.endif
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Get_Fabrication_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Get_Fabrication.End
+
+Program.Sub.Fab_Details.Start
+F.Intrinsic.Control.SetErrorHandler("Fab_Details_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+V.Local.sSQL.Declare(String) 
+v.Local.sRet.Declare(string) 
+v.Local.iR.Declare(String) 
+v.Local.iC.Declare(Long) 
+v.Local.sPart.Declare(String) 
+v.Local.iUB.Declare(Long)
+v.Local.sT.Declare(String)
+v.Local.fDim1.Declare(String)
+v.Local.fDim2.Declare(String)
+v.Local.sRetC.Declare(String)
+v.Local.sChild.Declare(STring)
+v.Local.sMat.Declare(String)
+v.Local.fQty.Declare(Float) 
+v.Local.iT.Declare(Long)
+'Get Fabrication Report Details
+'Program # inventory xref field where manfucatrus part starts with AMADA% 
+'Part 
+'Description
+'Qty
+'Shear Size
+'Material 
+'Dept
+
+v.Local.sPart.Set(v.Args.part)
+
+''source code must be f
+'f.Intrinsic.String.Build("Select Code_Source From V_Inventory_MST2 Where part = '{0}'",v.Local.sPart.Trim,v.Local.sSQL)
+'f.ODBC.connection!conX.OpenLocalRecordsetRO("rstSrc",v.Local.sSQL)
+'f.Intrinsic.Control.If(v.ODBC.conX!rstSrc.EOF,=,False)
+'	f.Intrinsic.Control.If(v.ODBC.conX!rstSrc.FieldValTrim!Code_Source,<>,"F")
+'		f.ODBC.conX!rstSrc.Close
+'		f.Intrinsic.Control.ExitSub
+'	Function.Intrinsic.Control.EndIf
+'Function.Intrinsic.Control.EndIf
+'f.ODBC.conX!rstSrc.Close
+'then try to find this information within our dstdbom udt. If it's there great use that if not we have to find it ourselves. 
+F.Intrinsic.Control.If(v.uGlobal.uDFab.UBound,=,-1) 
+	v.Local.iUB.Set(0)
+	v.uGlobal.uDfab.Redim(0,0)
+Function.Intrinsic.Control.Else 
+	f.Intrinsic.Math.Add(v.uGlobal.uDfab.UBound,1,v.Local.iUB) 
+	v.uGlobal.uDfab.RedimPreserve(0,v.Local.iUB) 
+Function.Intrinsic.Control.EndIf 
+'try to find this part in our BOM detail information 
+F.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uDSTDBOM!Component,v.Local.sPart,v.Local.sRet) 
+f.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"") 
+	F.Intrinsic.String.Split(v.Local.sRet,"*!*",v.local.sret) 
+	'only should be in there once, if in there more than once we aren't going to wrry about it. 
+	v.uGlobal.uDFab(v.Local.iUB)!Top_Level_Parent.Set(v.Global.sPart)
+	v.uGlobal.uDFab(v.Local.iUB)!Part.Set(v.Local.sPart) 
+	v.uGlobal.uDFab(v.Local.iUB)!Rev.Set(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Rev) 
+	v.uGlobal.uDFab(v.Local.iub)!Program.Set(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Program_NO) 
+	'qty actually needs to come from the uBom since that's the exploded value.
+	'Qty
+	'from BOM... 
+	v.uGlobal.uDFab(v.Local.iUB)!DESC.Set(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Desc)
+	
+	'have to look for all values and then sum the qty and then rewrite it back and then multiply by order qty.
+	f.Intrinsic.Variable.udtmultiseek(v.uGlobal.uBOM!Component,v.Local.sPart,v.Local.sT) 
+	Function.Intrinsic.Control.If(v.Local.sT.Trim,<>,"") 
+		'grab the qty from the bom added together loop through
+		F.Intrinsic.String.Split(v.Local.sT,"*!*",v.Local.sT) 
+		F.Intrinsic.Control.For(v.Local.iT,0,v.Local.sT.UBound,1)
+			f.Intrinsic.Math.Add(v.Local.fQty,v.uGlobal.uBOM(v.Local.sT(v.Local.iT))!Qty,v.Local.fqty)
+		f.Intrinsic.Control.Next(v.Local.iT)
+'		v.uGlobal.uDFab(v.Local.iUB)!Qty.Set(v.uGlobal.uBOM(v.Local.sT(0))!Qty)
+	Function.Intrinsic.Control.Else 
+		v.Local.fQty.Set(0)
+	f.Intrinsic.Control.endif
+
+	f.Intrinsic.Math.Mult(v.Local.fQty,v.Global.QtyOrder,v.uGlobal.udfab(v.Local.iUB)!Qty)
+
+	v.uGlobal.uDFab(v.Local.iub)!Shear_Size.Set(v.uGlobal.udSTDbom(v.Local.sRet(0))!Shear_Size)
+
+	'appears to only be shown if we have a shear size?
+	f.Intrinsic.Control.If(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Shear_Size,<>,"")
+		v.uGlobal.uDFab(v.Local.iUB)!Material.Set(v.uGlobal.udstdbom(v.Local.sRet(0))!Material) 
+	Function.Intrinsic.Control.Else 
+		v.uGlobal.uDFab(v.Local.iUB)!Material.Set("")
+	Function.Intrinsic.Control.EndIf
+
+	v.uGlobal.uDFab(v.Local.iUB)!Dept.Set(v.uGlobal.udstdbom(v.Local.sRet(0))!Dept)
+F.Intrinsic.Control.else 
+	'we ahve to find this manually
+	'boo... 
+	v.uGlobal.uDFab(v.Local.iUB)!Top_Level_Parent.Set(v.Global.sPart)
+	v.uGlobal.uDFab(v.Local.iUB)!Part.Set(v.Local.sPart) 
+	'Program, Desc, Qty,Shear_Size,Material,Dept.
+	'ProgramIs found from the inventory record x?ref field for each part. Only display the values where the manufactor starts with ?Amada?
+	F.Intrinsic.String.Build("Select MFG_NAME From V_INV_Cross_Ref Where Part = '{0}' And UCASE(MFG_Part) Like '%AMADA%'",v.Local.sPart,v.Local.sSQL) 
+	F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+	F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		v.uglobal.uDFab(v.Local.iUB)!Program.Set(v.ODBC.conX!rst.FieldValTrim!MFG_Name)
+	Function.Intrinsic.Control.EndIf
+	f.ODBC.conX!rst.Close
+
+	'CHECK FOR A SALV FLAG 
+'	F.Intrinsic.String.Build("SELECT MFG_NAME FROM V_Inv_Cross_Ref Where Part = '{0}' And Ucase(MFG_PART) Like '%SALV%'",v.Local.sPart,v.Local.sSQL)
+'	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst", v.Local.sSQL) 
+'	Function.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,True) 
+'		v.uGlobal.uDFab(v.Local.iUB)!SALV_FLAG.Set("") 
+'	Function.Intrinsic.Control.Else 
+'		v.uGlobal.uDFab(v.Local.iUB)!SALV_FLAG.Set(v.ODBC.conX!rst.FieldValTrim!MFG_Name)
+'	Function.Intrinsic.Control.EndIf
+'	f.ODBC.conx!rst.Close 
+
+
+	'Description 
+	f.Intrinsic.String.Build("Select Description From V_Inventory_MSTR WHere Part = '{0}'", v.Local.sPart,v.Local.sSQL)
+	f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst", v.Local.sSQL) 
+	F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		v.uGlobal.uDFab(v.Local.iUB)!DESC.Set(v.ODBC.conX!rst.FieldValTrim!Description) 
+	Function.Intrinsic.Control.EndIf 
+	f.ODBC.conX!rst.Close 
+
+	'Get the Text INfo 2 which is the rev value instead. 
+
+	F.Intrinsic.String.Build("Select Text_Info2 From V_Inventory_Mst2 Where Part = '{0}'", v.Local.sPart,v.Local.sSQL)
+	F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+	F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+		'grab the rev
+		v.uGlobal.uDFab(v.Local.iUB)!Rev.Set(v.ODBC.conX!rst.FieldValTrim!Text_Info2)
+	Function.Intrinsic.Control.EndIf
+	f.ODBC.conX!rst.Close
+
+	'Qty
+	'from BOM... 
+	f.Intrinsic.Variable.udtmultiseek(v.uGlobal.uBOM!Component,v.Local.sPart,v.Local.sRet) 
+	Function.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"") 
+		'grab the qty from the bom 
+		f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet) 
+		f.Intrinsic.Math.Mult(v.uGlobal.uBOM(v.Local.sRet(0))!Qty,v.Global.QtyOrder,v.uGlobal.udfab(v.Local.iUB)!Qty)
+'		v.uGlobal.uDFab(v.Local.iUB)!Qty.Set(v.uGlobal.uBOM(v.Local.sRet(0))!Qty)
+		'get shear size. so that dim 1 + x +dim 2
+		'but we get that from the child of the parent(v.local.sPart). 
+		'it has to be a prent to get cutlist information eotherwise it is incorr3ect.
+		f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uBOM!Parent,v.Local.sPart,v.Local.sRetC)
+		f.Intrinsic.Control.If(v.Local.sRetC.Trim,<>,"")
+			f.Intrinsic.String.Split(v.Local.sretc,"*!*",v.Local.sRetC)
+			v.Local.sChild.Set(v.uGlobal.uBOM(v.Local.sRetC(0))!Component)
+		Function.Intrinsic.Control.Else 
+			v.Local.sChild.Set("")
+		Function.Intrinsic.Control.EndIf
+
+		Function.Intrinsic.Control.If(v.Local.sChild.Trim,<>,"")
+	'		f.Intrinsic.String.Build("Select Dimension_1, Dimension_2 From V_BOM_CutList Where Part = '{0}' And Component  = '{1}'",v.uGlobal.uBOM(v.Local.sRet(0))!Parent,v.uglobal.uBOM(v.Local.sRet(0))!Component,v.Local.sSQL) 
+			f.Intrinsic.String.Build("Select Dimension_1, Dimension_2 From V_BOM_CutList Where Part = '{0}' And Component  = '{1}'",v.Local.sPart,v.Local.sChild,v.Local.sSQL) 
+			f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+			F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+				F.Intrinsic.string.Format(v.ODBC.conX!rst.FieldValTrim!Dimension_1,"##.0000", v.Local.fDim1)
+				F.Intrinsic.string.Format(v.ODBC.conX!rst.FieldValTrim!Dimension_2,"##.0000", v.Local.fDim2)
+				f.Intrinsic.string.Build("{0} X {1}",v.Local.fDim1,v.Local.fDim2,v.Local.sT) 
+				v.uGlobal.udFab(v.Local.iUB)!Shear_Size.Set(v.Local.sT) 
+			Function.Intrinsic.Control.EndIf 
+			f.ODBC.conX!rst.Close 
+		Function.Intrinsic.Control.Else 
+			v.uGlobal.uDFab(v.Local.iUB)!Shear_Size.Set("")
+		Function.Intrinsic.Control.EndIf
+
+		'department 
+		'component being ubom(v.local.sret(v.local.ir)!Component
+
+		F.Intrinsic.String.Build("Select Memo_1 From V_BOM_ENG Where Part ='{0}'",v.uGlobal.uBOM(V.Local.sRet(0))!Component,v.Local.sSQL) 
+		F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL) 
+		F.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+	'		'memo 1 grab is hear to be used in details and it's the dept field 
+			v.uGlobal.uDFab(v.Local.iUB)!Dept.Set(v.ODBC.conX!rst.FieldValTrim!Memo_1)
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close
+
+		'Material is from the Child of The Child? 
+		F.Intrinsic.String.Build("Select * From BOM_MSTR WHERE Parent = '{0}' And Sequence_BOM  > '0000'", v.uGlobal.uBOM(v.Local.sRet(0))!Component, v.Local.sSQL) 
+		f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst", v.Local.sSQL) 
+		f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False) 
+			'then grab the part and get the BOM_ENG from their and grab the desc. 
+			f.Intrinsic.Control.If(v.uGlobal.uDFab(v.Local.iUB)!Shear_Size,<>,"")
+				F.Intrinsic.String.Build("Select Description From V_BOM_ENG Where Part = '{0}'",v.ODBC.conX!rst.fieldvaltrim!Part,v.Local.sSQL) 
+				F.ODBC.Connection!conX.OpenLocalRecordsetRO("rstMat",v.Local.sSQL) 
+				f.Intrinsic.Control.If(v.ODBC.conX!rstMat.EOF,=,False) 
+					F.Intrinsic.String.Build("Select Code_Exception,Code_Total From V_Inventory_MSTR Where Part ='{0}'",v.ODBC.conX!rst.FieldValTrim!Part,v.Local.sSQL) 
+					f.ODBC.Connection!conX.OpenLocalRecordsetRO("rstMatC",v.Local.sSQL)
+					Function.Intrinsic.Control.If(v.ODBC.conX!rstMatC.EOF,=,False)
+						v.Local.sMat.Set(v.ODBC.conX!rstMat.FieldValTrim!Description)
+						Function.Intrinsic.Control.If(V.Global.sCodeException,=,"P")
+							Function.Intrinsic.Control.If(v.ODBC.conX!rstMatC.FieldValTrim!Code_Total,=,"Y")
+
+								f.Intrinsic.String.Replace(v.Local.sMat,"BS","PG",v.Local.smat)
+							Function.Intrinsic.Control.EndIf
+						Function.Intrinsic.Control.ElseIf(V.Global.sCodeException,=,"S")
+							Function.Intrinsic.Control.If(v.ODBC.conX!rstMatC.FieldValTrim!Code_Total,=,"Y")
+								f.Intrinsic.String.Replace(v.Local.sMat,"BS","304SS",v.Local.smat)
+							Function.Intrinsic.Control.EndIf
+						Function.Intrinsic.Control.EndIf
+					Function.Intrinsic.Control.EndIf
+					f.ODBC.conX!rstMatC.Close
+					v.uGlobal.uDFab(v.Local.iUB)!Material.Set(v.Local.sMat)
+				Function.Intrinsic.Control.EndIf
+				f.ODBC.conX!rstMat.Close
+			Function.Intrinsic.Control.Else 
+				v.uGlobal.uDFab(v.Local.iUB)!Material.Set("")
+			Function.Intrinsic.Control.EndIf
+
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close			
+	f.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf 
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Fab_Details_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Fab_Details.End
+
+Program.Sub.Purch_Details.Start
+F.Intrinsic.Control.SetErrorHandler("Purch_Details_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.Local.sPart.Declare(String) 
+v.Local.sRet.Declare(String)
+v.Local.iR.Declare(Long) 
+v.Local.sSQL.Declare(String) 
+v.Local.iUB.Declare(Long)
+v.Local.fTQty.Declare(Float)
+v.Local.bComp.Declare(Boolean) 	
+v.Local.iLen.Declare(long)
+v.Local.iOrgiUdt.Declare(Long)
+v.Local.iQtyEach.Declare(Float)
+v.Local.iQ.Declare(Long)
+v.Local.sRegExMatch.Declare(String)
+v.Local.sComp.Declare(string)
+v.Local.iComp.Declare(long)
+v.Local.sQRet.Declare(String)
+v.Local.sSortCode.Declare(String)
+V.Local.sNotes.Declare(String)
+
+v.Local.sPart.Set(v.Args.part)
+v.Local.sPart.Set(v.Args.part)
+'Things to Grab : 
+'parent for link (global.sPart)
+'sort code
+'Part from args
+'Descripton
+'Qty Each 
+'Qty Total(bom qty * Order qty) 
+'UM 
+'Component ID(Comment field on bom)
+'MFG Part 
+
+'did we already grab this part form a previous BOM, as 
+f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uDPurch!Component,v.Local.sPart,v.Local.sRet) 
+F.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"")
+	'means we already got this part exit out 
+	'have to get something with the 
+	Function.Intrinsic.Control.ExitSub 	
+Function.Intrinsic.Control.EndIf
+
+
+F.Intrinsic.Control.If(v.uGlobal.uDPurch.UBound,=,-1) 
+	v.Local.iUB.Set(0) 
+	v.uGlobal.udpurch.Redim(0,0) 
+Function.Intrinsic.Control.Else 
+	f.Intrinsic.Math.add(v.uGlobal.uDPurch.UBound,1,v.Local.iUB)
+	v.uGlobal.uDPurch.RedimPreserve(0,v.Local.iUB)
+Function.Intrinsic.Control.EndIf 
+
+F.Intrinsic.Variable.udtmultiseek(v.uGlobal.uDSTDBOM!Component,v.Local.sPart,v.Local.sRet) 
+
+F.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"") 
+	f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet) 
+	'only going to grab the first anyways... it should all be the sames. 
+	v.uGlobal.uDPurch(v.Local.iUB)!parent.Set(v.Global.sPart) 
+	v.uGlobal.uDPurch(v.Local.iUB)!Component.set(v.Local.sPart) 
+	v.uGlobal.uDPurch(v.Local.iUB)!Desc.Set(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Desc)
+	'gty each is a loop each time we find this thing within the exploded bom 
+	f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uBOM!Component,v.Local.sPart,v.Local.sQRet)
+	Function.Intrinsic.Control.If(v.Local.sQRet.Trim,<>,"")
+		Function.Intrinsic.String.Split(v.Local.sQRet,"*!*",v.Local.sQRet)
+		f.Intrinsic.Control.For(v.Local.iQ,0,v.Local.sQRet.UBound,1)
+			f.Intrinsic.Math.Add(v.uGlobal.uBOM(v.Local.sQRet(v.Local.iQ))!Qty,v.Local.iQtyEach,v.Local.iQtyEach)
+		f.Intrinsic.Control.Next(v.Local.iQ)
+	Function.Intrinsic.Control.EndIf
+	v.uGlobal.uDpurch(v.Local.iUB)!Qty_Each.set(v.Local.iQtyEach)
+	'total qty is Qty Each x Order Qty 
+	f.Intrinsic.Math.Mult(v.Local.iQtyEach,v.Global.QtyOrder,v.Local.fTQty)
+	v.uGlobal.uDPurch(v.Local.iUB)!Qty_Total.Set(v.Local.fTQty)
+	v.uGlobal.uDPurch(v.Local.iUB)!UM.Set(v.uGlobal.uDSTDBOM(v.Local.sRet(0))!UM) 
+Function.Intrinsic.Control.Else 
+	'have to grab all manually 
+	'only going to grab the first anyways... it should all be the sames. 
+	v.uGlobal.uDPurch(v.Local.iUB)!parent.Set(v.Global.sPart) 
+	v.uGlobal.uDPurch(v.Local.iUB)!Component.set(v.Local.sPart)
+	'grab comp record from our BOM 
+	f.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uBOM!Component,v.Local.sPart,v.Local.sRet)
+	Function.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"")
+		f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+		'Qty Each is going to be the sum of all places this part can be used. 
+		f.Intrinsic.Control.For(v.Local.iQ,0,v.Local.sRet.UBound,1)		
+			f.Intrinsic.Math.Add(v.Local.iQtyEach,v.uGlobal.uBOM(v.Local.sRet(v.Local.iQ))!Qty,v.Local.iQtyEach)
+		f.Intrinsic.Control.Next(v.Local.iQ)			
+		v.uGlobal.uDPurch(v.Local.iUB)!Qty_Each.Set(v.Local.iQtyEach)
+		f.Intrinsic.Math.Mult(v.Local.iQtyEach,v.Global.QtyOrder,v.Local.fTQty)
+		v.uGlobal.uDPurch(v.Local.iUB)!Qty_Total.Set(v.Local.fTQty)	
+
+		F.Intrinsic.String.Build("Select Description,UM_INVENTORY From V_Inventory_MSTR Where Part = '{0}'",v.Local.sPart,v.Local.sSQL)
+		f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.ssql)
+		f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+			v.uGlobal.uDPurch(v.Local.iUB)!Desc.Set(v.ODBC.conX!rst.FieldValTrim!Description)
+			v.uGlobal.uDPurch(v.Local.iUB)!UM.Set(v.ODBC.conX!rst.FieldValTrim!UM_Inventory)
+		Function.Intrinsic.Control.EndIf
+		f.ODBC.conX!rst.Close
+	Function.Intrinsic.Control.EndIf
+Function.Intrinsic.Control.EndIf
+'same with component id no explanation so The format will always start with ???-##?, where it will be two alpha characters, then a ?-?, then two numbers.
+'so the provided customer explanation of sort code wasn't the best (go figure) so we have to figure out which comment line it could be. They say that The format will always be three numbers.so loop through comments and hope to get a hit.
+'f.Intrinsic.String.Build("Select Text From V_BOM_TEXT Where Parent = '{0}' And Part = '{1}' ORder By BOM_SEQ",v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Parent,v.uGlobal.uDSTDBOM(v.Local.sRet(0))!Component,v.Local.sSQL)
+
+'get all parents that this part is a part of within the BOM.  (used for the comp ids that we could have. 
+'Function.Intrinsic.Control.CallSub(findparents,"Component",v.Local.sPart)
+'returns us s parents argument anD PARENT seq arguments.
+v.Local.iOrgiUdt.Set(v.Local.iUB)
+
+F.Intrinsic.Variable.UDTMultiSeek(v.uGlobal.uBOM!Component,v.Local.sPart,v.Local.sRet)
+Function.Intrinsic.Control.If(v.Local.sRet.Trim,<>,"") 
+	f.Intrinsic.String.Split(v.Local.sRet,"*!*",v.Local.sRet)
+	F.Intrinsic.Control.For(v.Local.iR,0,v.Local.sret.UBound,1)
+		F.Intrinsic.String.Build("Select Sequence_BOM From V_BOM_MSTR Where Part = '{0}' And Parent = '{1}'",v.Local.sPart,v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Parent,v.Local.sSQL)
+		f.ODBC.Connection!conX.OpenLocalRecordsetRO("rstSEQ",v.Local.sSQL)
+		Function.Intrinsic.Control.If(v.ODBC.conX!rstSEQ.EOF,=,False) 
+			F.Intrinsic.String.Build("Select Text From V_BOM_NOTES Where Parent = '{0}' And Parent_Seq = '{1}'",v.uGlobal.uBOM(v.Local.sRet(v.Local.iR))!Parent,v.ODBC.conX!rstSeq.FieldValTrim!Sequence_BOM,v.Local.sSQL)
+			F.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+			f.Intrinsic.Control.DoUntil(v.ODBC.conX!rst.EOF,=,True)
+				'try to find the component ID ??-## 
+				'try a reg exp
+				
+				'Now that it's all in one table and not separated by Newlines on each new sequence we need to split on newline and check the UBound. If it's greater than zero then we use the second value
+				
+				F.Intrinsic.String.Split(V.ODBC.conX!rst.FieldValTrim!Text,V.Ambient.NewLine,V.Local.sNotes)
+				
+				F.Intrinsic.Control.If(V.Local.sNotes.UBound,>,0)
+					F.Intrinsic.String.RegExMatch(V.Local.sNotes(1),"^[a-zA-Z]{2}-[0-9]{2}",True,v.Local.sRegExMatch) 
+						'		F.Intrinsic.String.IsInString(v.ODBC.conX!rst.FieldValTrim!Text,"-",True,v.Local.bComp)
+					F.Intrinsic.Control.If(v.Local.sRegExMatch.Trim,<>,"") 
+						'this may be our component ID. 			
+						'this must be our comp 
+						'write it into a delimited string
+						Function.Intrinsic.Control.If(v.Local.sComp.Trim,=,"")
+							v.Local.sComp.Set(V.Local.sNotes(1))
+							v.uGlobal.uDPurch(v.Local.iub)!Comp_ID.Set(V.Local.sNotes(1))
+						Function.Intrinsic.Control.Else 
+							f.Intrinsic.String.Build("{0}*!*{1}",v.Local.sComp,V.Local.sNotes(1),v.Local.sComp)
+						Function.Intrinsic.Control.EndIf
+					f.Intrinsic.Control.Else
+						'we didn't find the expression so lets look for two dashes -- instead
+						F.Intrinsic.String.RegExMatch(V.Local.sNotes(1),"^[a-zA-Z]{2}--[0-9]{2}",True,v.Local.sRegExMatch) 
+						f.Intrinsic.Control.If(v.Local.sRegExMatch.Trim,<>,"")
+							'this may be our component ID. 			
+							'this must be our comp 
+							'write it into a delimited string
+							Function.Intrinsic.Control.If(v.Local.sComp.Trim,=,"")
+								v.Local.sComp.Set(V.Local.sNotes(1))
+								v.uGlobal.uDPurch(v.Local.iub)!Comp_ID.Set(V.Local.sNotes(1))
+							Function.Intrinsic.Control.Else 
+								f.Intrinsic.String.Build("{0}*!*{1}",v.Local.sComp,V.Local.sNotes(1),v.Local.sComp)
+							Function.Intrinsic.Control.EndIf
+						Function.Intrinsic.Control.EndIf 
+					f.Intrinsic.Control.EndIf
+				F.Intrinsic.Control.EndIf
+				
+				'if this our Sort Code? length of 3? 
+				f.Intrinsic.String.Len(V.Local.sNotes(0),v.Local.iLen) 
+				f.Intrinsic.Control.If(v.Local.iLen,=,3)
+					'must be our sort code? 
+					v.uGlobal.uDPurch(v.Local.iUB)!Sort_Code.Set(V.Local.sNotes(0)) 
+				f.Intrinsic.Control.endif
+				f.ODBC.conX!rst.MoveNext 	
+			F.Intrinsic.Control.Loop 
+			f.ODBC.conX!rst.Close 
+		Function.Intrinsic.Control.EndIf
+		F.ODBC.conX!rstSeq.Close
+	F.Intrinsic.Control.Next(v.Local.iR)	
+Function.Intrinsic.Control.EndIf
+
+
+'F.Intrinsic.Debug.Stop
+
+'get manu part and name for value. 
+F.Intrinsic.String.Build("Select MFG_PART,MFG_Name From V_INV_Cross_Ref Where Part = '{0}' And MFG_Part <>'' And MFG_Name <> '' Order By MFG_Part",v.Local.sPart,v.Local.sSQL)
+'we have to add all of these into the report. no matter what. so what we have to do is make the program run longer. 
+'and also basically replicate the same thing in our udt. 
+f.ODBC.Connection!conX.OpenLocalRecordsetRO("rst",v.Local.sSQL)
+'f.Intrinsic.Control.If(v.ODBC.conX!rst.EOF,=,False)
+'set our original iudt 
+
+Function.Intrinsic.String.Split(v.Local.sComp,"*!*",v.Local.sComp)
+
+v.Local.iComp.Set(0)
+
+f.Intrinsic.Control.DoUntil(v.ODBC.conX!rst.EOF,=,True) 
+	v.uGlobal.uDPurch(v.Local.iUB)!Parent.Set(v.Global.spart) 
+	v.uGlobal.uDPurch(v.Local.iub)!Component.Set(v.Local.sPart)
+	v.uGlobal.uDPurch(v.Local.iUB)!DESC.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!DESC)
+	v.uGlobal.uDPurch(v.Local.iUB)!Qty_Each.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!qty_each)
+	v.uGlobal.uDPurch(v.Local.iUB)!Qty_Total.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!Qty_Total)
+	v.uGlobal.uDPurch(v.Local.iUB)!UM.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!UM)
+	Function.Intrinsic.Control.If(v.Local.iComp,<=,v.Local.sComp.UBound)
+		v.uGlobal.uDPurch(v.Local.iUB)!Comp_ID.Set(v.Local.sComp(v.Local.iComp))
+	Function.Intrinsic.Control.Else 
+		v.uGlobal.uDPurch(v.Local.iUB)!Comp_ID.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!comp_ID)
+	Function.Intrinsic.Control.EndIf
+	v.uGlobal.uDPurch(v.Local.iUB)!Sort_Code.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!Sort_Code)	
+	v.uGlobal.uDPurch(v.Local.iUB)!DESC.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!DESC)
+	v.uGlobal.uDPurch(v.Local.iUB)!MFG_NAME.Set(v.ODBC.conX!rst.FieldValTrim!MFG_NAME)
+	v.uGlobal.uDPurch(v.Local.iUB)!MFG_Part.Set(v.ODBC.conX!rst.FieldValTrim!MFG_Part)
+	v.uGlobal.uDPurch.RedimPreserve(0,v.Local.iUB.++)
+	v.Local.iComp.Set(v.Local.iComp.++)		
+	f.ODBC.conX!rst.MoveNext 	
+Function.Intrinsic.Control.Loop
+
+
+
+'check and see if we are over or at our sComp Ubound.
+Function.Intrinsic.Control.DoUntil(v.Local.iComp,>,v.Local.sComp.UBound) 
+	f.Intrinsic.Control.If(v.Local.sComp(v.Local.iComp).Trim,<>,"")
+		v.uGlobal.uDPurch(v.Local.iUB)!Parent.Set(v.Global.spart) 
+		v.uGlobal.uDPurch(v.Local.iub)!Component.Set(v.Local.sPart)
+		v.uGlobal.uDPurch(v.Local.iUB)!DESC.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!DESC)
+		v.uGlobal.uDPurch(v.Local.iUB)!Qty_Each.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!qty_each)
+		v.uGlobal.uDPurch(v.Local.iUB)!Qty_Total.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!Qty_Total)
+		v.uGlobal.uDPurch(v.Local.iUB)!UM.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!UM)
+		Function.Intrinsic.Control.If(v.Local.iComp,<=,V.Local.sComp.UBound)
+			v.uGlobal.uDPurch(v.Local.iUB)!Comp_ID.Set(v.Local.sComp(v.Local.iComp))
+		Function.Intrinsic.Control.Else 
+			v.uGlobal.uDPurch(v.Local.iUB)!Comp_ID.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!comp_ID)
+		Function.Intrinsic.Control.EndIf
+		v.uGlobal.uDPurch(v.Local.iUB)!Sort_Code.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!Sort_Code)	
+		v.uGlobal.uDPurch(v.Local.iUB)!DESC.Set(v.uGlobal.uDPurch(v.Local.iOrgiUdt)!DESC)
+		v.uGlobal.uDPurch(v.Local.iUB)!MFG_NAME.Set("")
+		v.uGlobal.uDPurch(v.Local.iUB)!MFG_Part.Set("")	
+		v.uGlobal.uDPurch.RedimPreserve(0,v.Local.iUB.++)
+	Function.Intrinsic.Control.Endif	
+	v.Local.iComp.Set(v.Local.iComp.++)			
+Function.Intrinsic.Control.Loop 
+
+f.ODBC.conX!rst.Close
+
+'F.Intrinsic.Control.Next(v.Local.iR)	
+'Function.Intrinsic.Control.EndIf
+
+'f.ODBC.conX!rst.Close
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("Purch_Details_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.Purch_Details.End
+
+Program.Sub.UDT_Recordsets.Start
+F.Intrinsic.Control.SetErrorHandler("UDT_Recordsets_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+v.local.sSQL.Declare(String)
+v.Local.sTables.Declare(String)
+v.Local.iC.Declare(Long)
+
+'save all applicable udts to their corresponding tables. 
+f.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uEngHead!BIRUNID,v.Global.ibirunid)
+f.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uEngRelDet!BIRUNID,v.Global.iBIRUNID)
+Function.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uHFab!BIRUNID,v.Global.iBIRUNID)
+Function.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uDFab!BIRUNID,v.Global.iBIRUNID)
+f.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uHPurch!BIRUNID,v.Global.iBIRUNID)
+f.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uDPurch!BIRUNID,v.Global.iBIRUNID)
+f.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uHStdBOM!BIRUNID,v.Global.iBIRUNID)
+Function.Intrinsic.Variable.UDTSetMemberValue(v.uGlobal.uDSTDBOM!BIRUNID,v.Global.iBIRUNID)
+
+F.Intrinsic.String.Split("GCG_3929_STD_BOM_Hdr*!*GCG_3929_STD_BOM_Dtl*!*GCG_3929_PUR_LST_Hdr*!*GCG_3929_PUR_LST_DTL*!*GCG_3929_Fab_Lst_Hdr*!*GCG_3929_Fab_Lst_Dtl*!*GCG_3929_ENG_REL_DTL*!*GCG_3929_ENG_REL_HDR","*!*",v.Local.sTables) 
+
+'clear out our tables first. 
+f.Intrinsic.Control.For(v.Local.iC,0,v.Local.sTables.UBound,1)
+	f.Intrinsic.String.Build("Delete From {0}",v.Local.sTables(v.Local.iC),v.Local.sSQL) 
+	f.ODBC.Connection!conX.Execute(v.Local.sSQL) 
+F.Intrinsic.Control.Next(v.Local.iC)
+
+
+
+'Eng Rel Header 
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_ENG_REL_HDR")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uENGHead")
+f.ODBC.conX!rst.Close
+
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_ENG_REL_DTL")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uENGRelDet")
+f.ODBC.conX!rst.Close
+
+'STD BOMS
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_STD_BOM_Hdr")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uHSTDBOM")
+f.ODBC.conX!rst.Close
+
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_STD_BOM_Dtl")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uDSTDBOM")
+f.ODBC.conX!rst.Close
+
+'Fab UDTS
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_Fab_Lst_Hdr")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uHFab")
+f.ODBC.conX!rst.Close
+
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_Fab_Lst_Dtl")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uDFab")
+f.ODBC.conX!rst.Close
+
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_PUR_LST_Hdr")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uHPurch")
+f.ODBC.conX!rst.Close
+
+f.ODBC.Connection!conX.OpenLocalRecordsetRW("rst","Select * From GCG_3929_PUR_LST_DTL")
+f.Intrinsic.Variable.SaveUDTToRecordSet("conx","rst","v.uglobal.uDPurch")
+f.ODBC.conX!rst.Close
+
+
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("UDT_Recordsets_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+Program.Sub.UDT_Recordsets.End
+
+Program.Sub.CallBI.Start
+F.Intrinsic.Control.SetErrorHandler("CallBI_Err")
+F.Intrinsic.Control.ClearErrors
+
+V.Local.sError.Declare(String)
+
+f.Global.BI.StopLogging(v.Global.iLogID)
+v.Local.sParam.Declare(String)
+v.Local.sVal.Declare(String)
+
+v.Local.sParam.Set("BIRUNID")
+v.Local.sVal.Set(v.Global.iBIRUNID)
+f.Intrinsic.UI.CloseWaitDialog
+f.Global.BI.RunReportPreProcessor(v.Global.iBIRUNID,v.Global.iLogID,v.Local.sParam,v.Local.sVal,"",-1,False,"",-1,"",-1,"","",v.Global.iBIRUNID)
+
+
+
+F.Intrinsic.Control.ExitSub
+
+F.Intrinsic.Control.Label("CallBI_Err")
+F.Intrinsic.Control.If(V.Ambient.ErrorNumber,<>,0)
+	Function.Intrinsic.String.Concat("Project: GCG_3929_Job_Paperwork_RPT.gas",V.Ambient.Newline,V.Ambient.Newline,"Subroutine: ",V.Ambient.CurrentSubroutine,V.Ambient.NewLine,"Error Occurred ",V.Ambient.ErrorNumber," with description ",V.Ambient.ErrorDescription,V.Local.sError)
+	F.Intrinsic.UI.Msgbox(V.Local.sError)
+	Function.Intrinsic.Control.CallSub(ss_form1_unload)
+Function.Intrinsic.Control.EndIf
+
+
+Program.Sub.CallBI.End
+
+Program.Sub.Comments.Start
+${$0$}$$}$TRT$}$7/2/2015 5:08:56 PM
+${$3$}$0$}$$}$0$}$-1$}$$}$12:00:00 AM$}$Quote 5958-1
+${$5$}$3.0.0.0$}$1
+${$6$}$nle$}$20220228122643450$}$kjzCRYkA6UEoRnCwndYnRbFO/s06+5AMpO2A4Sd3XTAPh68UuJrjv585dspGPlKb
+Program.Sub.Comments.End
+
+Program.Sub.ScreenSS.Start
+SS_Form1{{CAPTION::Job Paperwork Report
+SS_Form1.CTRL{{NAME::txtJob\\TYPE::2\\CAPTION::Job\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txtSuffix\\TYPE::2\\CAPTION::Suffix\\GROUP::1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::dtpDate\\TYPE::6\\CAPTION::Date\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::txtIssue\\TYPE::2\\CAPTION::Issue By\\GROUP::-1\\BROWSER::0\\SIZE::1
+SS_Form1.CTRL{{NAME::cmdPrint\\TYPE::5\\CAPTION::Print\\GROUP::-1\\BROWSER::0\\SIZE::1
+
+Program.Sub.ScreenSS.End
