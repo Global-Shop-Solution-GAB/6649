@@ -1,0 +1,123 @@
+Program.Sub.ScreenSU.Start
+Gui.Form..Create(BaseForm)
+Gui.Form..Caption("Form")
+Gui.Form..Size(355,471)
+Gui.Form..MinX(0)
+Gui.Form..MinY(0)
+Gui.Form..Position(0,0)
+Gui.Form..AlwaysOnTop(False)
+Gui.Form..FontName("Tahoma")
+Gui.Form..FontSize(8.25)
+Gui.Form..ControlBox(True)
+Gui.Form..MaxButton(True)
+Gui.Form..MinButton(True)
+Gui.Form..MousePointer(0)
+Gui.Form..Moveable(True)
+Gui.Form..Sizeable(True)
+Gui.Form..ShowInTaskBar(True)
+Gui.Form..TitleBar(True)
+Gui.Form..Event(UnLoad,Form_UnLoad)
+Gui.Form.GsGcRef.Create(GsGridControl)
+Gui.Form.GsGcRef.Enabled(True)
+Gui.Form.GsGcRef.Visible(True)
+Gui.Form.GsGcRef.Zorder(0)
+Gui.Form.GsGcRef.Size(344,398)
+Gui.Form.GsGcRef.Position(5,5)
+Gui.Form.GsGcRef.Anchor(15)
+Gui.Form.cmdSAVE.Create(Button)
+Gui.Form.cmdSAVE.Enabled(True)
+Gui.Form.cmdSAVE.Visible(True)
+Gui.Form.cmdSAVE.Zorder(0)
+Gui.Form.cmdSAVE.Size(75,23)
+Gui.Form.cmdSAVE.Position(131,413)
+Gui.Form.cmdSAVE.Caption("SAVE")
+Gui.Form.cmdSAVE.FontName("Tahoma")
+Gui.Form.cmdSAVE.FontSize(8.25)
+Gui.Form.cmdSAVE.Event(Click,cmdSAVE_Click)
+Gui.Form.cmdSAVE.Anchor(2)
+Program.Sub.ScreenSU.End
+'ARC#6649
+'Cus MESTEX
+' Custom hook/Menu Item
+' Feb 2022 - Nam Le
+
+'MESTEX is needing a file export for their nesting software. This is not a standard nesting interface and will require a custom script to perform the export they're looking for. This will need to run from it's own menu item and require a user interface to select a BOM parent work order.
+
+'This project is built on GCG_3920, also built specifically for MESTEX, author: unknown
+
+'This script open and maintain the list of Dept-Priority References
+Program.Sub.Preflight.Start
+Program.Sub.Preflight.End
+Program.Sub.Main.Start
+f.Intrinsic.Control.Try
+	Function.Intrinsic.UI.UsePixels ' Allows you to use Pixels instead of Twips throughout
+	f.Intrinsic.Control.CallSub(RefreshForm)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(Catching)
+f.Intrinsic.Control.EndTry
+
+gui.Form..Show
+Program.Sub.Main.End
+
+Program.Sub.Form_UnLoad.Start
+f.Intrinsic.Control.End
+Program.Sub.Form_UnLoad.End
+
+Program.Sub.cmdSAVE_Click.Start
+f.Intrinsic.Control.Try
+	f.ODBC.Connection!Con.OpenCompanyConnection
+'		f.Data.Datatable.AcceptChanges("dtRef")
+		f.Data.Datatable.SaveToDB("dtRef", "Con", "GCG_6649_DEPT_PRIO", "DEPT", 7)
+	f.ODBC.Connection!Con.Close
+		
+	f.Intrinsic.UI.Msgbox("SAVED!")
+	f.Intrinsic.Control.CallSub(RefreshForm)
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(Catching)
+f.Intrinsic.Control.EndTry
+Program.Sub.cmdSAVE_Click.End
+
+Program.Sub.RefreshForm.Start
+f.Intrinsic.Control.Try
+
+	gui.Form.GsGcRef.Visible(false)
+	f.ODBC.Connection!Con.OpenCompanyConnection
+		f.Intrinsic.Control.If(v.DataTable.dtRef.Exists)
+			f.Data.Datatable.Close("dtRef")
+		f.Intrinsic.Control.EndIf
+		f.Data.Datatable.CreateFromSQL("dtRef", "Con", "select RTRIM(DEPT) DEPT, RTRIM(PRIORITY) PRIORITY from GCG_6649_DEPT_PRIO order by DEPT", True)
+	f.ODBC.Connection!Con.Close
+		
+	gui.Form.GsGcRef.AddGridviewFromDatatable("gvRef", "dtRef")
+	
+	gui.Form.GsGcRef.SetGridviewProperty("gvRef", v.Enum.GridViewPropertyNames!EnableAppearanceOddRow, True)
+	gui.Form.GsGcRef.SetGridviewProperty("gvRef", v.Enum.GridViewPropertyNames!Editable, True)
+	gui.Form.GsGcRef.SetGridviewProperty("gvRef", v.Enum.GridViewPropertyNames!ReadOnly, False)
+	gui.Form.GsGcRef.SetGridviewProperty("gvRef", v.Enum.GridViewPropertyNames!AllowAddRows, True)
+	gui.Form.GsGcRef.SetGridviewProperty("gvRef", v.Enum.GridViewPropertyNames!AllowDeleteRows, True)
+	
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "DEPT", v.Enum.ColumnPropertyNames!Caption, "DEPARTMENT")
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "PRIORITY", v.Enum.ColumnPropertyNames!Caption, "PRIORITY")
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "DEPT", v.Enum.ColumnPropertyNames!HeaderFontBold, True)
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "PRIORITY", v.Enum.ColumnPropertyNames!HeaderFontBold, True)
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "DEPT", v.Enum.ColumnPropertyNames!HeaderHAlignment, "Center")
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "PRIORITY", v.Enum.ColumnPropertyNames!HeaderHAlignment, "Center")
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "DEPT", v.Enum.ColumnPropertyNames!MinWidth, 80)
+	gui.Form.GsGcRef.SetColumnProperty("gvRef", "PRIORITY", v.Enum.ColumnPropertyNames!MinWidth, 60)
+	gui.Form.GsGcRef.MainView("gvRef")	
+	
+	gui.Form.GsGcRef.Visible(True)
+	
+f.Intrinsic.Control.Catch
+	f.Intrinsic.Control.CallSub(Catching)
+f.Intrinsic.Control.EndTry
+Program.Sub.RefreshForm.End
+
+Program.Sub.Catching.Start
+	f.Intrinsic.UI.Msgbox(v.Ambient.ErrorDescription)
+Program.Sub.Catching.End
+
+Program.Sub.Comments.Start
+${$5$}$3.0.0.0$}$1
+${$6$}$nle$}$20220228091014540$}$kjzCRYkA6UEoRnCwndYnRbFO/s06+5AMgqHirYdw5PlwUMKEQIAN063EfOY6Bupn
+Program.Sub.Comments.End
